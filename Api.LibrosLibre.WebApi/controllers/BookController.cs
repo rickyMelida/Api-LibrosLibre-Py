@@ -7,7 +7,7 @@ namespace Api.LibrosLibre.WebApi
     public class BookController: ControllerBase
     {
         
-        [HttpGet("get-books")]
+        [HttpGet("get-book")]
         public string Get()
         {
             return "Hello World";

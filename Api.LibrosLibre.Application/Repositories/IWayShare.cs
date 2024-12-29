@@ -1,3 +1,5 @@
+using Api.LibrosLibre.Domain;
+
 namespace Api.LibrosLibre.Application
 {
     public interface IWayShareRepository

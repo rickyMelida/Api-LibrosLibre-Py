@@ -11,4 +11,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Api.LibrosLibre.Persistence\Api.LibrosLibre.Persistence.csproj" />
+    <ProjectReference Include="..\Api.LibrosLibre.Domain\Api.LibrosLibre.Domain.csproj" />
+    <ProjectReference Include="..\Api.LibrosLibre.Application\Api.LibrosLibre.Application.csproj" />
+  </ItemGroup>
+
 </Project>

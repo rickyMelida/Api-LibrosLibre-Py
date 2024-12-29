@@ -3,7 +3,6 @@ namespace Api.LibrosLibre.Domain {
         public int Id { get; set; }
         public string Author { get; set; }
         public bool Available { get; set; }
-        public byte[] Images { get; set; }
         public string LitleDescription { get; set; }
         public string Title { get; set; }
         public string OtherDetails { get; set; }
@@ -11,6 +10,6 @@ namespace Api.LibrosLibre.Domain {
         public string State { get; set; }
         public string TransactionType { get; set; }
         public DateTime UploadDate {get; set;}
-        public string year { get; set; }
+        public string Year { get; set; }
     }
 }

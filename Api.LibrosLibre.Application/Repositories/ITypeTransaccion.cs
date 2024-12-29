@@ -1,11 +1,13 @@
+using Api.LibrosLibre.Domain;
+
 namespace Api.LibrosLibre.Application
 {
     public interface ITypeTransaccionRepository
     {
-        Task<List<TypeTransaccion>> GetTypeTransaccions();
-        Task<TypeTransaccion> GetTypeTransaccionById(int id);
-        Task<bool> CreateTypeTransaccion(TypeTransaccion typeTransaccion);
-        Task<bool> UpdateTypeTransaccion(TypeTransaccion typeTransaccion);
+        Task<List<TypeTransaction>> GetTypeTransaccions();
+        Task<TypeTransaction> GetTypeTransaccionById(int id);
+        Task<bool> CreateTypeTransaccion(TypeTransaction typeTransaccion);
+        Task<bool> UpdateTypeTransaccion(TypeTransaction typeTransaccion);
         Task<bool> DeleteTypeTransaccion(int id);
     }
 }
