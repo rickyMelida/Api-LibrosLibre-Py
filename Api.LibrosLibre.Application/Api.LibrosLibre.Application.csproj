@@ -8,6 +8,6 @@
     <ProjectReference Include="..\Api.LibrosLibre.Domain\Api.LibrosLibre.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ServiceExtension.cs.fs" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
   </ItemGroup>
 </Project>

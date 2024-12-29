@@ -10,9 +10,9 @@ namespace Api.LibrosLibre.Persistence
     public class BookRepository : IBookRepository
     {
         private readonly AppDbContext _context;
-        private readonly UnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public BookRepository(AppDbContext context, UnitOfWork unitOfWork) =>
+        public BookRepository(AppDbContext context, IUnitOfWork unitOfWork) =>
             (_context, _unitOfWork) = (context, unitOfWork);
 
         public async Task<Book> CreateBook(Book book)

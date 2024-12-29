@@ -7,7 +7,7 @@ namespace Api.LibrosLibre.Persistence {
     {
         public void Configure(EntityTypeBuilder<UserBook> builder)
         {
-            builder.ToTable("public", "users_book");
+            builder.ToTable("users_book", "public");
 
             builder.Property(x => x.Id).HasColumnName("id").IsRequired();
             builder.Property(x => x.User).HasColumnName("user").IsRequired();
