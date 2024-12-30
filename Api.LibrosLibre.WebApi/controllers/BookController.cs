@@ -30,6 +30,19 @@ namespace Api.LibrosLibre.WebApi
             return Ok(images);
         }
 
+        [HttpPost]
+        public async Task<ActionResult<Book>> SetBook(SetBookRequest book)
+        {
+            var createdBook = await _bookService.SetBook(book);
+            
+            if (createdBook == null)
+                return BadRequest();
+            
+            return Ok(createdBook);
+        }
+
+    
+
 
     }
 }

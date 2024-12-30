@@ -2,7 +2,7 @@ using Api.LibrosLibre.Domain;
 
 namespace Api.LibrosLibre.Application
 {
-    public interface ITypeTransaccionRepository
+    public interface ITypeTransactionRepository
     {
         Task<List<TypeTransaction>> GetTypeTransaccions();
         Task<TypeTransaction> GetTypeTransaccionById(int id);

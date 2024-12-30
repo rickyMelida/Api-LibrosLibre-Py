@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Api.LibrosLibre.Application {
+namespace Api.LibrosLibre.Application 
+{
     public static class ServiceExtension
     {
         public static void ConfigureApplication(this IServiceCollection services)

@@ -1,4 +1,5 @@
-namespace Api.LibrosLibre.Domain {
+namespace Api.LibrosLibre.Domain 
+{
     public class Book {
         public int Id { get; set; }
         public string Author { get; set; }

@@ -8,6 +8,7 @@ namespace Api.LibrosLibre.Application
         Task<List<Book>> GetRecentsBooks();
         Task<List<Book>> GetFeaturedBooks();
         Task<List<Book>> GetOthersBooks();
+        Task<Book> SetBook(SetBookRequest bookRequest);
 
     }
 }

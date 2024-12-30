@@ -1,8 +1,5 @@
 using Api.LibrosLibre.Domain;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Linq;
 using Api.LibrosLibre.Application;
 
 namespace Api.LibrosLibre.Persistence

@@ -1,4 +1,5 @@
-namespace Api.LibrosLibre.Domain {
+namespace Api.LibrosLibre.Domain 
+{
     public class Transaction {
         public int Id { get; set; }
         public string Observation { get; set; }

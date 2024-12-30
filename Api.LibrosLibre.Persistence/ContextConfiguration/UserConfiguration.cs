@@ -1,8 +1,9 @@
-namespace Api.LibrosLibre.Persistence {
-    using Api.LibrosLibre.Domain;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Api.LibrosLibre.Domain;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
+namespace Api.LibrosLibre.Persistence
+{
     public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         public void Configure(EntityTypeBuilder<User> builder)

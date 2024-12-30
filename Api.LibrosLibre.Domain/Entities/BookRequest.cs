@@ -1,4 +1,5 @@
-namespace Api.Domain {
+namespace Api.Domain 
+{
     public class BookRequest {
         public int Id { get; set; }
         public int UserInteresed { get; set; }

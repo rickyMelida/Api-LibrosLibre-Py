@@ -1,6 +1,7 @@
 using Api.LibrosLibre.Domain;
 
-namespace Api.LibrosLibre.Application {
+namespace Api.LibrosLibre.Application 
+{
     public interface IUserService
     {
         Task<List<User>> GetUsers();

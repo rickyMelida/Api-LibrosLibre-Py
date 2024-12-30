@@ -6,8 +6,6 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Api.LibrosLibre.Persistence
 {
-
-
     public static class ServiceExtension
     {
         public static IServiceCollection ConfigurePersistence(this IServiceCollection services, IConfiguration configuration)
