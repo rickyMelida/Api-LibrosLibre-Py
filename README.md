@@ -1,63 +1,63 @@
 # Api-LibrosLibre-Py
 
-## Overview
-Api-LibrosLibre-Py is a .NET project designed to provide an API for managing a library of books. This project allows users to perform CRUD (Create, Read, Update, Delete) operations on book records and offers additional features to enhance the user experience.
+## Descripción General
+Api-LibrosLibre-Py es un proyecto .NET diseñado para proporcionar una API para gestionar una biblioteca de libros. Este proyecto permite a los usuarios realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) en los registros de libros y ofrece características adicionales para mejorar la experiencia del usuario.
 
-## Features
-- Add new books to the library
-- Retrieve details of existing books
-- Update information of existing books
-- Delete books from the library
-- Get relevant books based on user preferences
-- Retrieve the latest books uploaded to the library
-- Search for books using various criteria
-- Upload new books (authentication required)
+## Características
+- Añadir nuevos libros a la biblioteca
+- Obtener detalles de libros existentes
+- Actualizar información de libros existentes
+- Eliminar libros de la biblioteca
+- Obtener libros relevantes basados en las preferencias del usuario
+- Recuperar los últimos libros subidos a la biblioteca
+- Buscar libros usando varios criterios
+- Subir nuevos libros (se requiere autenticación)
 
-## Requirements
-- .NET 5.0 or later
-- SQL Server or any compatible database
+## Requisitos
+- .NET 8.0 o posterior
+- Postgres SQL o cualquier base de datos compatible
 
-## Installation
-1. Clone the repository:
+## Instalación
+1. Clona el repositorio:
   ```sh
-  git clone https://github.com/yourusername/Api-LibrosLibre-Py.git
+  git clone https://github.com/rickyMelida/Api-LibrosLibre-Py.git
   ```
-2. Navigate to the project directory:
+2. Navega al directorio del proyecto:
   ```sh
   cd Api-LibrosLibre-Py
   ```
-3. Restore the dependencies:
+3. Restaura las dependencias:
   ```sh
   dotnet restore
   ```
-4. Update the database connection string in `appsettings.json`.
+4. Actualiza la cadena de conexión de la base de datos en `appsettings.json`.
 
-## Usage
-1. Run the application:
+## Uso
+1. Ejecuta la aplicación:
   ```sh
   dotnet run
   ```
-2. The API will be available at `https://localhost:5001`.
+2. La API estará disponible en `https://localhost:5001`.
 
 ## Endpoints
-- `GET /api/books` - Retrieve all books
-- `GET /api/books/{id}` - Retrieve a book by ID
-- `POST /api/books` - Add a new book
-- `PUT /api/books/{id}` - Update a book by ID
-- `DELETE /api/books/{id}` - Delete a book by ID
-- `GET /api/books/relevant` - Get relevant books based on user preferences
-- `GET /api/books/latest` - Retrieve the latest books uploaded
-- `GET /api/books/search` - Search for books using various criteria
-- `POST /api/books/upload` - Upload a new book (authentication required)
+- `GET /api/books` - Recuperar todos los libros
+- `GET /api/books/{id}` - Recuperar un libro por ID
+- `POST /api/books` - Añadir un nuevo libro
+- `PUT /api/books/{id}` - Actualizar un libro por ID
+- `DELETE /api/books/{id}` - Eliminar un libro por ID
+- `GET /api/books/relevant` - Obtener libros relevantes basados en las preferencias del usuario
+- `GET /api/books/latest` - Recuperar los últimos libros subidos
+- `GET /api/books/search` - Buscar libros usando varios criterios
+- `POST /api/books/upload` - Subir un nuevo libro (se requiere autenticación)
 
-## Contributing
-Contributions are welcome! Please fork the repository and create a pull request with your changes.
+## Contribuciones
+¡Las contribuciones son bienvenidas! Por favor, haz un fork del repositorio y crea un pull request con tus cambios.
 
-## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+## Licencia
+Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.
 
-## Contact
-For any questions or feedback, please contact [yourname@example.com](mailto:yourname@example.com).
+## Contacto
+Para cualquier pregunta o comentario, por favor contacta a [ricardomelida92@gmail.com](mailto:ricardomelida92@gmail.com).
 
-## Purpose
-This project was created to provide the "Libros Libres App" with data and its main functionalities, such as getting relevant books, retrieving the latest books uploaded, finding specific books, uploading books (if the user is authenticated), and other features.
+## Propósito
+Este proyecto fue creado para proporcionar a la "Libros Libres App" datos y sus principales funcionalidades, como obtener libros relevantes, recuperar los últimos libros subidos, encontrar libros específicos, subir libros (si el usuario está autenticado) y otras características.
