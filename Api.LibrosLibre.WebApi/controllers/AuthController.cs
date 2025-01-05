@@ -22,10 +22,10 @@ namespace Api.LibrosLibre.WebApi
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult<User>> Register(User user)
+        public async Task<ActionResult<User>> Register(User user)
         {
             var registerUser = await _userService.CreateUser(user);
-            if(registerUser.Result)
+            if(registerUser != null)
                 return Ok(user);
 
             return BadRequest();

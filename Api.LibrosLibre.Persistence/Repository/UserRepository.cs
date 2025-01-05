@@ -14,7 +14,9 @@ namespace Api.LibrosLibre.Persistence
 
         public Task<bool> CreateUser(User user)
         {
-            throw new NotImplementedException();
+            _context.Users.Add(user);
+            _context.SaveChanges();
+            return Task.FromResult(true);
         }
 
         public Task<bool> DeleteUser(int id)

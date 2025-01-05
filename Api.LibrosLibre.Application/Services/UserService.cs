@@ -4,9 +4,18 @@ namespace Api.LibrosLibre.Application
 {
     public class UserService : IUserService
     {
-        public Task<bool> CreateUser(User user)
+        private readonly IUserRepository _userRepository;
+        private readonly IUnitOfWork _unitOfWork;
+
+        public UserService(IUserRepository userRepository, IUnitOfWork unitOfWork) =>
+            (_userRepository, _unitOfWork) = (userRepository, unitOfWork);
+             
+        public async Task<User> CreateUser(User user)
         {
-            throw new NotImplementedException();
+            await _userRepository.CreateUser(user);
+            await _unitOfWork.Save();
+            
+            return user;
         }
 
         public Task<bool> DeleteUser(int id)
@@ -24,7 +33,7 @@ namespace Api.LibrosLibre.Application
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateUser(User user)
+        public Task<User> UpdateUser(User user)
         {
             throw new NotImplementedException();
         }
