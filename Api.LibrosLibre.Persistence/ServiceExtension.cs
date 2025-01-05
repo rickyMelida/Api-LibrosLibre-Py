@@ -15,6 +15,8 @@ namespace Api.LibrosLibre.Persistence
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connecionString));
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<IImageRepository, ImageRepository>();
+            services.AddScoped<IUserBookRepository, UserBookRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;

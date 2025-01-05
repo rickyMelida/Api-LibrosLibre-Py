@@ -43,6 +43,11 @@ namespace Api.LibrosLibre.Persistence
             _context.SaveChanges();
             return Task.FromResult(true);
         }
+
+        public async Task<int> GetLastId()
+        {
+            return await _context.Books.MaxAsync(e => e.Id);
+        }
     }
 
 }

@@ -29,7 +29,12 @@ namespace Api.LibrosLibre.Persistence
 
         public async Task<List<Image>> GetImages()
         {
-            return await _context.Images.ToListAsync<Image>();
+            return await _context.Images.OrderByDescending(x => x.Id).ToListAsync();
+        }
+
+        public async Task<int> GetLastId()
+        {
+            return await _context.Images.MaxAsync(x => x.Id); 
         }
 
         public Task<Image> UpdateImage(Image image)

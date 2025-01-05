@@ -17,12 +17,6 @@ namespace Api.LibrosLibre.WebApi
             _bookImagesService = bookImagesService;
         }
         
-        [HttpGet("get-book")]
-        public string Get()
-        {
-            return "Hello World";
-        }
-
         [HttpGet("get-main-books")]
         public  async Task<ActionResult<List<Image>>> GetMainBooks()
         {

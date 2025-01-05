@@ -9,6 +9,7 @@ namespace Api.LibrosLibre.Application
         Task<Image> CreateImage(Image image);
         Task<Image> UpdateImage(Image image);
         Task<bool> DeleteImage(int id);
+        Task<int> GetLastId();
 
     }
 

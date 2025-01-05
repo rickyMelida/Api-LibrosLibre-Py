@@ -9,6 +9,7 @@ namespace Api.LibrosLibre.Domain
         public int TransactionType { get; set; }
         public List<byte[]> Images { get; set; }
         public string Description { get; set; }
+        public int User {get; set;}
         public string? OtherDetail { get; set; }
         public string? Year { get; set; }
     }

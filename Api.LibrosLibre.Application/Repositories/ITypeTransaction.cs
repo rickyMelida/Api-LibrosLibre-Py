@@ -6,8 +6,8 @@ namespace Api.LibrosLibre.Application
     {
         Task<List<TypeTransaction>> GetTypeTransaccions();
         Task<TypeTransaction> GetTypeTransaccionById(int id);
-        Task<bool> CreateTypeTransaccion(TypeTransaction typeTransaccion);
-        Task<bool> UpdateTypeTransaccion(TypeTransaction typeTransaccion);
+        Task<TypeTransaction> CreateTypeTransaccion(TypeTransaction typeTransaccion);
+        Task<TypeTransaction> UpdateTypeTransaccion(TypeTransaction typeTransaccion);
         Task<bool> DeleteTypeTransaccion(int id);
     }
 }

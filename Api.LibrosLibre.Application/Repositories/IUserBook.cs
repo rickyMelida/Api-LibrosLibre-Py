@@ -9,5 +9,6 @@ namespace Api.LibrosLibre.Application
         Task<bool> CreateUserBook(UserBook userBook);
         Task<bool> UpdateUserBook(UserBook userBook);
         Task<bool> DeleteUserBook(int id);
+        Task<int> GetLastId();
     }
 }

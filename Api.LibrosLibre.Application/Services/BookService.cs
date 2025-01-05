@@ -5,14 +5,13 @@ namespace Api.LibrosLibre.Application
     public class BookService : IBookService
     {
         private readonly IBookRepository _bookRepository;
+        private readonly IImageRepository _imageRepository;
+        private readonly IUserBookRepository _userBookRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public BookService(IBookRepository bookRepository, IUnitOfWork unitOfWork)
-        {
-            _bookRepository = bookRepository;
-            _unitOfWork = unitOfWork;
-        }
-
+        public BookService(IBookRepository bookRepository, IImageRepository imageRepository, IUserBookRepository userBookRepository, IUnitOfWork unitOfWork) =>
+            (_bookRepository, _imageRepository, _userBookRepository, _unitOfWork) = 
+            (bookRepository, imageRepository, userBookRepository, unitOfWork);
 
         public Task<List<Book>> GetBook(int id)
         {
@@ -36,19 +35,50 @@ namespace Api.LibrosLibre.Application
 
         public async Task<Book> SetBook(SetBookRequest bookRequest)
         {
-            throw new NotImplementedException();
-            /*var book = new Book 
+            int bookId = await _bookRepository.GetLastId() + 1;
+            Book book = new Book()
             {
-                Title = bookRequest.Title,
+                Id = bookId,
                 Author = bookRequest.Author,
+                Available = true,
+                LitleDescription = bookRequest.Description,
+                Title = bookRequest.Title,
+                OtherDetails = bookRequest.OtherDetail ?? "",
                 Price = bookRequest.Price,
                 State = bookRequest.State,
-                TransactionType = bookRequest.TransactionType
-            }
+                TransactionType = bookRequest.TransactionType,
+                UploadDate = DateTime.Now,
+                Year = bookRequest.Year ?? ""
+            };
+            
             await _bookRepository.CreateBook(book);
             await _unitOfWork.Save();
+
+            int imageId = await _imageRepository.GetLastId() + 1;
+            Image image = new Image()
+            {
+                Id = imageId,
+                BookId = book.Id,
+                Description = "Book Image",
+                Picture = bookRequest.Images[0]
+            };
             
-            return book;*/
+            await _imageRepository.CreateImage(image);
+            await _unitOfWork.Save();
+
+            int userBookId = await _userBookRepository.GetLastId() + 1;
+            UserBook userBook = new UserBook()
+            {
+                Id = userBookId,
+                User = bookRequest.User,
+                Book = book.Id
+            };
+
+            await _userBookRepository.CreateUserBook(userBook);
+            await _unitOfWork.Save();
+
+            return book;
+
         }
     }
 }

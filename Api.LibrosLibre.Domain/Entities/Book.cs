@@ -8,8 +8,8 @@ namespace Api.LibrosLibre.Domain
         public string Title { get; set; }
         public string OtherDetails { get; set; }
         public string Price { get; set; }
-        public string State { get; set; }
-        public string TransactionType { get; set; }
+        public int State { get; set; }
+        public int TransactionType { get; set; }
         public DateTime UploadDate {get; set;}
         public string Year { get; set; }
     }

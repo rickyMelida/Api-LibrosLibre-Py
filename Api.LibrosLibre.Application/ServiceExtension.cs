@@ -8,6 +8,7 @@ namespace Api.LibrosLibre.Application
         {
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<IBookImagesService, ImagesServices>();
+            services.AddScoped<IUserService, UserService>();
         }
 
     }
