@@ -12,9 +12,11 @@ namespace Api.LibrosLibre.Persistence
         public UserBookRepository(AppDbContext context, IUnitOfWork unitOfWork) =>
             (_context, _unitOfWork) = (context, unitOfWork);
 
-        public Task<bool> CreateUserBook(UserBook userBook)
+        public async Task<bool> CreateUserBook(UserBook userBook)
         {
-            throw new NotImplementedException();
+            await _context.UserBooks.AddAsync(userBook);
+            await _unitOfWork.Save();
+            return true;
         }
 
         public Task<bool> DeleteUserBook(int id)
@@ -24,7 +26,7 @@ namespace Api.LibrosLibre.Persistence
 
         public async Task<int> GetLastId()
         {
-            return await _context.UserBooks.MaxAsync(x => x.Id);
+            return await _context.UserBooks.AnyAsync() ? await _context.UserBooks.MaxAsync(x => x.Id) : 0;
         }
 
         public Task<UserBook> GetUserBookById(int id)

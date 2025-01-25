@@ -47,7 +47,7 @@ namespace Api.LibrosLibre.Application
                 Price = bookRequest.Price,
                 State = bookRequest.State,
                 TransactionType = bookRequest.TransactionType,
-                UploadDate = DateTime.Now,
+                UploadDate = DateTime.UtcNow,
                 Year = bookRequest.Year ?? ""
             };
             

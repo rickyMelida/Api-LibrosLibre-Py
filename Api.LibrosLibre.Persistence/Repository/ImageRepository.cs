@@ -12,9 +12,11 @@ namespace Api.LibrosLibre.Persistence
         public ImageRepository(AppDbContext context, IUnitOfWork unitOfWork) =>
             (_context, _unitOfWork) = (context, unitOfWork);
 
-        public Task<Image> CreateImage(Image image)
+        public async Task<Image> CreateImage(Image image)
         {
-            throw new NotImplementedException();
+            await _context.Images.AddAsync(image);
+            await _unitOfWork.Save();
+            return image; 
         }
 
         public Task<bool> DeleteImage(int id)
@@ -34,7 +36,7 @@ namespace Api.LibrosLibre.Persistence
 
         public async Task<int> GetLastId()
         {
-            return await _context.Images.MaxAsync(x => x.Id); 
+            return await _context.Images.AnyAsync() ? await _context.Images.MaxAsync(x => x.Id) : 0;
         }
 
         public Task<Image> UpdateImage(Image image)
