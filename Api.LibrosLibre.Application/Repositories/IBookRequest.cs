@@ -2,12 +2,12 @@ using Api.Domain;
 
 namespace Api.LibrosLibre.Application
 {
-    public interface IBookRequestRepository
+    public interface IRequestedBookRepository
     {
-        Task<List<BookRequest>> GetBookRequests();
-        Task<BookRequest> GetBookRequestById(int id);
-        Task<bool> CreateBookRequest(BookRequest bookRequest);
-        Task<bool> UpdateBookRequest(BookRequest bookRequest);
-        Task<bool> DeleteBookRequest(int id);
+        Task<List<RequestedBook>> GetRequestedBooks();
+        Task<RequestedBook> GetRequestedBookById(int id);
+        Task<bool> CreateRequestedBook(RequestedBook RequestedBook);
+        Task<bool> UpdateRequestedBook(RequestedBook RequestedBook);
+        Task<bool> DeleteRequestedBook(int id);
     }
 }

@@ -1,6 +1,6 @@
 namespace Api.Domain 
 {
-    public class BookRequest {
+    public class RequestedBook {
         public int Id { get; set; }
         public int UserInteresed { get; set; }
         public int OwnerBook { get; set; }

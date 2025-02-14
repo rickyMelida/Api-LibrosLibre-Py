@@ -1,6 +1,6 @@
 namespace Api.LibrosLibre.Domain
 {
-    public class SetBookRequest
+    public class BookRequest
     {
         public string Title { get; set; }
         public string Author { get; set; }

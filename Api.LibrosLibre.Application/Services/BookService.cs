@@ -18,22 +18,22 @@ namespace Api.LibrosLibre.Application
             throw new NotImplementedException();
         }
 
-        public Task<List<Book>> GetFeaturedBooks()
+        public Task<List<BookRequest>> GetFeaturedBooks(int amount)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<Book>> GetOthersBooks()
+        public Task<List<BookRequest>> GetOthersBooks(int amount)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<Book>> GetRecentsBooks()
+        public Task<List<BookRequest>> GetRecentsBooks(int amount)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Book> SetBook(SetBookRequest bookRequest)
+        public async Task<Book> SetBook(BookRequest bookRequest)
         {
             int bookId = await _bookRepository.GetLastId() + 1;
             Book book = new Book()

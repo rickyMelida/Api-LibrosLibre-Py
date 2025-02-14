@@ -24,8 +24,29 @@ namespace Api.LibrosLibre.WebApi
             return Ok(images);
         }
 
+        [HttpGet("get-featured-books")]
+        public async Task<ActionResult<List<Book>>> GetFeaturedBooks([FromQuery] int amount)
+        {
+            var books = await _bookService.GetFeaturedBooks(amount);
+            return Ok(books);
+        }
+
+        [HttpGet("get-recent-books")]
+        public  async Task<ActionResult<List<Book>>> GetRecentBooks([FromQuery] int amount)
+        {
+            var books = await _bookService.GetRecentsBooks(amount);
+            return Ok(books);
+        }
+
+        [HttpGet("get-other-books")]
+        public  async Task<ActionResult<List<Book>>> GetOtherBooks([FromQuery] int amount)
+        {
+            var books = await _bookService.GetOthersBooks(amount);
+            return Ok(books);
+        }
+
         [HttpPost]
-        public async Task<ActionResult<Book>> SetBook(SetBookRequest book)
+        public async Task<ActionResult<Book>> SetBook(BookRequest book)
         {
             var createdBook = await _bookService.SetBook(book);
             
