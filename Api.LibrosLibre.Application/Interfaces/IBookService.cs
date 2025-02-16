@@ -4,11 +4,11 @@ namespace Api.LibrosLibre.Application
 {
     public interface IBookService
     {
-        Task<List<Book>> GetBook(int id);
-        Task<List<BookRequest>> GetRecentsBooks(int amount);
-        Task<List<BookRequest>> GetFeaturedBooks(int amount);
-        Task<List<BookRequest>> GetOthersBooks(int amount);
-        Task<Book> SetBook(BookRequest bookRequest);
+        Task<BookDTOResponse> GetBook(int id);
+        Task<List<BookDTOResponse>> GetRecentsBooks(int amount);
+        Task<List<BookDTOResponse>> GetFeaturedBooks(int amount);
+        Task<List<BookDTOResponse>> GetOthersBooks(int amount);
+        Task<Book> SetNewBook(BookDTORequest bookRequest);
 
     }
 }

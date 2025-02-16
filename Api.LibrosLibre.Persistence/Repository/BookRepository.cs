@@ -21,7 +21,7 @@ namespace Api.LibrosLibre.Persistence
 
         public async Task<Book> GetBookById(int id)
         {
-            return await _context.Books.FirstAsync(x => x.Id == id);
+            return await _context.Books.Where(x => x.Id == id).FirstAsync();
         }
 
         public async Task<List<Book>> GetBooks()
@@ -47,6 +47,30 @@ namespace Api.LibrosLibre.Persistence
         public async Task<int> GetLastId()
         {
             return await _context.Books.MaxAsync(e => e.Id);
+        }
+
+        public async Task<List<Book>> GetRecentBooks(int amount)
+        {
+            return await _context.Books
+                .OrderByDescending(b => b.UploadDate)
+                .Take(amount)
+                .ToListAsync();
+        }
+
+        public async Task<List<Book>> GetFeatureBooks(int amount)
+        {
+            return await _context.Books
+                .OrderByDescending(b => b.UploadDate)
+                .Take(amount)
+                .ToListAsync();
+        }
+
+        public async Task<List<Book>> GetOtherBooks(int amount)
+        {
+            return await _context.Books
+                .OrderBy(b => b.UploadDate)
+                .Take(amount)
+                .ToListAsync();
         }
     }
 

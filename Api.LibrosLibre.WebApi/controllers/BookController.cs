@@ -25,30 +25,30 @@ namespace Api.LibrosLibre.WebApi
         }
 
         [HttpGet("get-featured-books")]
-        public async Task<ActionResult<List<Book>>> GetFeaturedBooks([FromQuery] int amount)
+        public async Task<ActionResult<List<BookDTOResponse>>> GetFeaturedBooks([FromQuery] int amount)
         {
             var books = await _bookService.GetFeaturedBooks(amount);
             return Ok(books);
         }
 
         [HttpGet("get-recent-books")]
-        public  async Task<ActionResult<List<Book>>> GetRecentBooks([FromQuery] int amount)
+        public  async Task<ActionResult<List<BookDTOResponse>>> GetRecentBooks([FromQuery] int amount)
         {
             var books = await _bookService.GetRecentsBooks(amount);
             return Ok(books);
         }
 
         [HttpGet("get-other-books")]
-        public  async Task<ActionResult<List<Book>>> GetOtherBooks([FromQuery] int amount)
+        public  async Task<ActionResult<List<BookDTOResponse>>> GetOtherBooks([FromQuery] int amount)
         {
             var books = await _bookService.GetOthersBooks(amount);
             return Ok(books);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Book>> SetBook(BookRequest book)
+        public async Task<ActionResult<BookDTOResponse>> SetBook(BookDTORequest book)
         {
-            var createdBook = await _bookService.SetBook(book);
+            var createdBook = await _bookService.SetNewBook(book);
             
             if (createdBook == null)
                 return BadRequest();

@@ -10,6 +10,9 @@ namespace Api.LibrosLibre.Application
         Task<Book> UpdateBook(Book book);
         Task<bool> DeleteBook(int id);
         Task<int> GetLastId();
+        Task<List<Book>> GetRecentBooks(int amount);
+        Task<List<Book>> GetFeatureBooks(int amount);
+        Task<List<Book>> GetOtherBooks(int amount);
     }
     
 }

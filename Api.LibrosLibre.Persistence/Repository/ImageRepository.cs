@@ -16,12 +16,17 @@ namespace Api.LibrosLibre.Persistence
         {
             await _context.Images.AddAsync(image);
             await _unitOfWork.Save();
-            return image; 
+            return image;
         }
 
         public Task<bool> DeleteImage(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<List<Image>> GetImageByBookId(int id)
+        {
+            return await _context.Images.Where(e => e.BookId == id).ToListAsync();
         }
 
         public Task<Image> GetImageById(int id)
@@ -31,7 +36,7 @@ namespace Api.LibrosLibre.Persistence
 
         public async Task<List<Image>> GetImages()
         {
-            return await _context.Images.OrderByDescending(x => x.Id).ToListAsync();
+            return await _context.Images.ToListAsync();
         }
 
         public async Task<int> GetLastId()

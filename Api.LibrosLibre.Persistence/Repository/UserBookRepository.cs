@@ -29,14 +29,14 @@ namespace Api.LibrosLibre.Persistence
             return await _context.UserBooks.AnyAsync() ? await _context.UserBooks.MaxAsync(x => x.Id) : 0;
         }
 
-        public Task<UserBook> GetUserBookById(int id)
+        public async Task<UserBook> GetUserBookById(int id)
         {
-            throw new NotImplementedException();
+            return await _context.UserBooks.Where(e => e.Id == id).FirstAsync();
         }
 
         public Task<List<UserBook>> GetUserBooks()
         {
-            throw new NotImplementedException();
+            return _context.UserBooks.ToListAsync();
         }
 
         public Task<bool> UpdateUserBook(UserBook userBook)

@@ -10,6 +10,7 @@ namespace Api.LibrosLibre.Application
         Task<Image> UpdateImage(Image image);
         Task<bool> DeleteImage(int id);
         Task<int> GetLastId();
+        Task<List<Image>> GetImageByBookId(int id);
 
     }
 
