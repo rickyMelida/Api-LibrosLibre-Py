@@ -9,9 +9,9 @@ namespace Api.LibrosLibre.WebApi
     public class BookController: ControllerBase
     {
         private readonly IBookService _bookService;
-        private readonly IBookImagesService _bookImagesService;
+        private readonly IImagesService _bookImagesService;
 
-        public BookController(IBookService bookService, IBookImagesService bookImagesService)
+        public BookController(IBookService bookService, IImagesService bookImagesService)
         {
             _bookService = bookService;
             _bookImagesService = bookImagesService;

@@ -31,7 +31,7 @@ namespace Api.LibrosLibre.Persistence
 
         public Task<User> GetUserById(int id)
         {
-            throw new NotImplementedException();
+            return _context.Users.Where(e => e.Id == id).FirstAsync();
         }
 
         public Task<List<User>> GetUsers()

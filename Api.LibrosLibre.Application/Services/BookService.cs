@@ -5,22 +5,25 @@ namespace Api.LibrosLibre.Application
     public class BookService : IBookService
     {
         private readonly IBookRepository _bookRepository;
-        private readonly IImageRepository _imageRepository;
-        private readonly IUserBookRepository _userBookRepository;
-        private readonly IUserRepository _userRepository;
+        private readonly IImagesService  _bookImagesService; 
+        private readonly IUserBookService _userBookService;
+        private readonly IUserService _userService;
         private readonly IUnitOfWork _unitOfWork;
 
-        public BookService(IBookRepository bookRepository, IImageRepository imageRepository, IUserBookRepository userBookRepository, IUserRepository userRepository, IUnitOfWork unitOfWork) =>
-            (_bookRepository, _imageRepository, _userBookRepository, _userRepository, _unitOfWork) =
-            (bookRepository, imageRepository, userBookRepository, userRepository, unitOfWork);
+        public BookService(IBookRepository bookRepository,
+                           IImagesService bookImagesService,
+                           IUserBookService userBookService,
+                           IUserService userService,
+                           IUnitOfWork unitOfWork) =>
+            (_bookRepository, _bookImagesService, _userBookService,_userService, _unitOfWork) =
+            (bookRepository, bookImagesService, userBookService, userService, unitOfWork);
 
         public async Task<BookDTOResponse> GetBook(int id)
         {
-
             var book = await _bookRepository.GetBookById(id);
-            var image = await _imageRepository.GetImageByBookId(book.Id);
-            var userBook = await _userBookRepository.GetUserBookById(book.Id);
-            var user = await _userRepository.GetUserById(userBook.User);
+            var image = await _bookImagesService.GetImagesByBookId(book.Id);
+            var userBook = await _userBookService.GetImagesByBookId(book.Id);
+            var user = await _userService.GetUserById(userBook.User);
 
             return new BookDTOResponse
             {
@@ -30,13 +33,10 @@ namespace Api.LibrosLibre.Application
                 Price = book.Price,
                 State = book.State,
                 TransactionType = book.TransactionType,
-
                 Images = image.Select(e => Convert.ToBase64String(e.Picture)).ToList(),
                 Description = book.LitleDescription,
                 UserName = user.Name
             };
-
-
         }
 
         public Task<List<BookDTOResponse>> GetFeaturedBooks(int amount)
@@ -56,41 +56,12 @@ namespace Api.LibrosLibre.Application
 
         public async Task<Book> SetNewBook(BookDTORequest bookRequest)
         {
-
             Book book = await SetBook(bookRequest);
-            int imageId = await _imageRepository.GetLastId() + 1;
-            // TODO Separate this in his service 
-            Image image = new Image();
-            if(bookRequest.Image != null) {
-                using var ms = new MemoryStream();
-                await bookRequest.Image.CopyToAsync(ms);
-                var imageBytes = ms.ToArray();
 
-                image = new Image()
-                {
-                    Id = imageId,
-                    BookId = book.Id,
-                    Description = "Book Image",
-                    Picture = imageBytes
-                };
-            }
-
-            await _imageRepository.CreateImage(image);
-            await _unitOfWork.Save();
-
-            int userBookId = await _userBookRepository.GetLastId() + 1;
-            UserBook userBook = new UserBook()
-            {
-                Id = userBookId,
-                User = bookRequest.User,
-                Book = book.Id
-            };
-
-            await _userBookRepository.CreateUserBook(userBook);
-            await _unitOfWork.Save();
+            await _bookImagesService.SetImages(bookRequest, book.Id);
+            await _userBookService.Set(bookRequest, book.Id);
 
             return book;
-
         }
 
         private async Task<Book> SetBook(BookDTORequest bookRequest)

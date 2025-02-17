@@ -23,9 +23,9 @@ namespace Api.LibrosLibre.Application
             throw new NotImplementedException();
         }
 
-        public Task<User> GetUserById(int id)
+        public async Task<User> GetUserById(int id)
         {
-            throw new NotImplementedException();
+            return await _userRepository.GetUserById(id);
         }
 
         public Task<List<User>> GetUsers()

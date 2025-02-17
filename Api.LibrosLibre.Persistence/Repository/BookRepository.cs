@@ -46,7 +46,7 @@ namespace Api.LibrosLibre.Persistence
 
         public async Task<int> GetLastId()
         {
-            return await _context.Books.MaxAsync(e => e.Id);
+            return await _context.Books.AnyAsync() ? await _context.Books.MaxAsync(e => e.Id) : 0;
         }
 
         public async Task<List<Book>> GetRecentBooks(int amount)
