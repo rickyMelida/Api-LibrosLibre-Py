@@ -17,6 +17,14 @@ namespace Api.LibrosLibre.WebApi
             _bookImagesService = bookImagesService;
         }
         
+        [HttpGet("get-book-details")]
+        public async Task<ActionResult<BookDTOResponse>> GetBookDetail([FromQuery] int id)
+        {
+            var book = await _bookService.GetBook(id);
+
+            return Ok(book);
+        }
+
         [HttpGet("get-main-books")]
         public  async Task<ActionResult<List<Image>>> GetMainBooks()
         {
@@ -56,7 +64,12 @@ namespace Api.LibrosLibre.WebApi
             return Ok(createdBook);
         }
 
-    
+        [HttpGet("search-books")]
+        public async Task<ActionResult<List<BookDTOResponse>>> SearchBook(string keyword)
+        {
+            var result = await _bookService.SearchBook(keyword);
+            return Ok(result);
+        }
 
 
     }

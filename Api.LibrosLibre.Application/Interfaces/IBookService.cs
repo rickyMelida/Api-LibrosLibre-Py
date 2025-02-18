@@ -9,6 +9,7 @@ namespace Api.LibrosLibre.Application
         Task<List<BookDTOResponse>> GetFeaturedBooks(int amount);
         Task<List<BookDTOResponse>> GetOthersBooks(int amount);
         Task<Book> SetNewBook(BookDTORequest bookRequest);
+        Task<List<BookDTOResponse>> SearchBook(string keyword);
 
     }
 }

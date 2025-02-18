@@ -13,6 +13,7 @@ namespace Api.LibrosLibre.Application
         Task<List<Book>> GetRecentBooks(int amount);
         Task<List<Book>> GetFeatureBooks(int amount);
         Task<List<Book>> GetOtherBooks(int amount);
+        Task<List<Book>> SearchBook(string keyword);
     }
     
 }

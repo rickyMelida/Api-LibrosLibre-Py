@@ -60,7 +60,7 @@ namespace Api.LibrosLibre.Persistence
         public async Task<List<Book>> GetFeatureBooks(int amount)
         {
             return await _context.Books
-                .OrderByDescending(b => b.UploadDate)
+                .OrderBy(b => b.Price)
                 .Take(amount)
                 .ToListAsync();
         }
@@ -71,6 +71,15 @@ namespace Api.LibrosLibre.Persistence
                 .OrderBy(b => b.UploadDate)
                 .Take(amount)
                 .ToListAsync();
+        }
+
+        public async Task<List<Book>> SearchBook(string keyword)
+        {
+            return await _context.Books
+                    .Where(b => b.Author.Contains(keyword) ||
+                                b.Title.Contains(keyword) ||
+                                b.LitleDescription.Contains(keyword))
+                    .ToListAsync();
         }
     }
 
