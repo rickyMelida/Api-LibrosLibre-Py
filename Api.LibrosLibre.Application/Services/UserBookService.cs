@@ -10,9 +10,14 @@ namespace Api.LibrosLibre.Application
         public UserBookService(IUserBookRepository userBookRepository, IUnitOfWork unitOfWork) =>
             (_userBookRepository, _unitOfWork) = (userBookRepository, unitOfWork);
 
-        public async Task<UserBook> GetImagesByBookId(int bookId)
+        public async Task<UserBook> GetUserBookByBookId(int bookId)
         {
             return await _userBookRepository.GetUserBookById(bookId);
+        }
+
+        public async Task<List<UserBook>> GetUserBookByUserId(int userId)
+        {
+            return await _userBookRepository.GetUserBookByUserId(userId);
         }
 
         public async Task Set(BookDTORequest bookRequest, int bookId)

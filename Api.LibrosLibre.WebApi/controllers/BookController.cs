@@ -75,6 +75,14 @@ namespace Api.LibrosLibre.WebApi
             return Ok(result);
         }
 
+        [HttpGet("get-books-by-user")]
+        [Authorize]
+        public async Task<ActionResult<List<BookDTOResponse>>> GetBooksByUser([FromQuery] int userId)
+        {
+            var result = await _bookService.GetBooksByUser(userId);
+            return Ok(result);
+        }
+
 
     }
 }

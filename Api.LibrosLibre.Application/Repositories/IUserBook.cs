@@ -6,6 +6,7 @@ namespace Api.LibrosLibre.Application
     {
         Task<List<UserBook>> GetUserBooks();
         Task<UserBook> GetUserBookById(int id);
+        Task<List<UserBook>> GetUserBookByUserId(int userId);
         Task<bool> CreateUserBook(UserBook userBook);
         Task<bool> UpdateUserBook(UserBook userBook);
         Task<bool> DeleteUserBook(int id);

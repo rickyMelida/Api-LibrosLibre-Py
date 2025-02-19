@@ -39,6 +39,35 @@ namespace Api.LibrosLibre.Application
             };
         }
 
+        public async Task<List<BookDTOResponse>> GetBooksByUser(int userId)
+        {
+            var userBooks = await _userBookService.GetImagesByUserId(userId);
+            
+            List<BookDTOResponse> booksResults = new List<BookDTOResponse>();
+
+            foreach(var userBook in userBooks)
+            {
+                var book = await _bookRepository.GetBookById(userBook.Book);
+                var image = await _bookImagesService.GetImagesByBookId(book.Id);
+                var user = await _userService.GetUserById(userBook.User);
+                booksResults.Add(new BookDTOResponse
+                {
+                    Id = book.Id,
+                    Title = book.Title,
+                    Author = book.Author,
+                    Price = book.Price,
+                    State = book.State,
+                    TransactionType = book.TransactionType,
+                    Images = image.Select(e => Convert.ToBase64String(e.Picture)).ToList(),
+                    Description = book.LitleDescription,
+                    UserName = user.Name
+                });
+            }
+
+            return booksResults;
+
+        }
+
         public async Task<List<BookDTOResponse>> GetFeaturedBooks(int amount)
         {
             var featuresBooks = await _bookRepository.GetFeatureBooks(amount);

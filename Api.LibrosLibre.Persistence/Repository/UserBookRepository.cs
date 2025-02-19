@@ -34,6 +34,11 @@ namespace Api.LibrosLibre.Persistence
             return await _context.UserBooks.Where(e => e.Id == id).FirstAsync();
         }
 
+        public async Task<List<UserBook>> GetUserBookByUserId(int userId)
+        {
+            return await _context.UserBooks.Where(e => e.User == userId).ToListAsync();
+        }
+
         public Task<List<UserBook>> GetUserBooks()
         {
             return _context.UserBooks.ToListAsync();
