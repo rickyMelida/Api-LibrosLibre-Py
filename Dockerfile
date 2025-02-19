@@ -10,7 +10,9 @@ COPY ["Api.LibrosLibre.Persistence/Api.LibrosLibre.Persistence.csproj", "Api.Lib
 COPY ["Api.LibrosLibre.WebApi/Api.LibrosLibre.WebApi.csproj", "Api.LibrosLibre.WebApi/"]
 
 # Restaurar todas las dependencias
-RUN dotnet restore
+RUN dotnet restore "Api.LibrosLibre.Application/Api.LibrosLibre.Application.csproj"
+RUN dotnet restore "Api.LibrosLibre.Persistence/Api.LibrosLibre.Persistence.csproj"
+RUN dotnet restore "Api.LibrosLibre.WebApi/Api.LibrosLibre.WebApi.csproj"
 
 # Copiar todo el código fuente después de restaurar
 COPY . .
