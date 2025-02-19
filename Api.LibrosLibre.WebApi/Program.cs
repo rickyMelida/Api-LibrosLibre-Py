@@ -5,10 +5,12 @@ using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
+string path = "/etc/secrets/firebase-config.json";//"../Api.LibrosLibre.Application/firebase-config.json"
+
 var builder = WebApplication.CreateBuilder(args);
 FirebaseApp.Create(new AppOptions
 {
-    Credential = GoogleCredential.FromFile("../Api.LibrosLibre.Application/firebase-config.json") // Agrega tu JSON de credenciales
+    Credential = GoogleCredential.FromFile(path) // Agrega tu JSON de credenciales
 });
 
 // Configurar la autenticación JWT con Firebase
