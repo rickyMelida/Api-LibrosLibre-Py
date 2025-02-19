@@ -1,13 +1,37 @@
 using Api.LibrosLibre.Application;
 using Api.LibrosLibre.Persistence;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
+FirebaseApp.Create(new AppOptions
+{
+    Credential = GoogleCredential.FromFile("../Api.LibrosLibre.Application/firebase-config.json") // Agrega tu JSON de credenciales
+});
 
-// Add services to the container.
+// Configurar la autenticación JWT con Firebase
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = "https://securetoken.google.com/book-change-api";
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = "https://securetoken.google.com/book-change-api",
+            ValidateAudience = true,
+            ValidAudience = "book-change-api",
+            ValidateLifetime = true
+        };
+    });
+
+builder.Services.AddAuthorization();
+
 builder.Services.ConfigurePersistence(builder.Configuration);
 builder.Services.ConfigureApplication();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();

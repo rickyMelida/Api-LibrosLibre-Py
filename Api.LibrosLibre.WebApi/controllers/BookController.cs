@@ -1,5 +1,6 @@
 using Api.LibrosLibre.Application;
 using Api.LibrosLibre.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.LibrosLibre.WebApi
@@ -17,7 +18,9 @@ namespace Api.LibrosLibre.WebApi
             _bookImagesService = bookImagesService;
         }
         
+
         [HttpGet("get-book-details")]
+        [Authorize]
         public async Task<ActionResult<BookDTOResponse>> GetBookDetail([FromQuery] int id)
         {
             var book = await _bookService.GetBook(id);
@@ -54,6 +57,7 @@ namespace Api.LibrosLibre.WebApi
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<BookDTOResponse>> SetBook(BookDTORequest book)
         {
             var createdBook = await _bookService.SetNewBook(book);

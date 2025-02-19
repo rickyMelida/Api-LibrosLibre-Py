@@ -145,3 +145,4 @@ Api.LibrosLibre.Persistence/bin
 Api.LibrosLibre.Test/bin
 Api.LibrosLibre.WebApi/bin
 
+Api.LibrosLibre.Application/firebase-config.json

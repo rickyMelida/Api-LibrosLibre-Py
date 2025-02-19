@@ -1,5 +1,6 @@
 using Api.LibrosLibre.Application;
 using Api.LibrosLibre.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.LibrosLibre.WebApi
@@ -16,12 +17,14 @@ namespace Api.LibrosLibre.WebApi
         }
 
         [HttpGet("get-user")]
+        [Authorize]
         public string GetUser()
         {
             return "User";
         }
 
         [HttpPost("set-user")]
+        [Authorize]
         public ActionResult<User> SetUser(User user)
         {
             var result = _userService.CreateUser(user);
