@@ -1,22 +1,29 @@
-# Use la imagen base oficial de .NET SDK (para compilación)
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
+# Etapa 1: Build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
-# Copie los archivos .csproj y restaure las dependencias
-COPY *.csproj ./
+# Copiar los archivos de solución y los archivos de proyecto
+COPY ["*.sln", "./"]
+COPY ["Api.LibrosLibre.Application/Api.LibrosLibre.Application.csproj", "Api.LibrosLibre.Application/"]
+COPY ["Api.LibrosLibre.Domain/Api.LibrosLibre.Domain.csproj", "Api.LibrosLibre.Domain/"]
+COPY ["Api.LibrosLibre.Persistence/Api.LibrosLibre.Persistence.csproj", "Api.LibrosLibre.Persistence/"]
+COPY ["Api.LibrosLibre.WebApi/Api.LibrosLibre.WebApi.csproj", "Api.LibrosLibre.WebApi/"]
+
+# Restaurar todas las dependencias
 RUN dotnet restore
 
-# Copie el resto de los archivos y compile la aplicación
-COPY . ./
-RUN dotnet publish -c Release -o out
+# Copiar todo el código fuente después de restaurar
+COPY . .
 
-# Use una imagen base de .NET Runtime para la ejecución
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+# Construir la aplicación
+WORKDIR /app/Api.LibrosLibre.WebApi
+RUN dotnet publish -c Release -o /publish
+
+# Etapa 2: Runtime
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
-COPY --from=build-env /app/out .
+COPY --from=build /publish ./
 
-# Exponer el puerto que la aplicación está escuchando
-EXPOSE 80
-
-# Defina el punto de entrada para el contenedor
-ENTRYPOINT ["dotnet", "simple-api-dockerhub.dll"]
+# Exponer el puerto
+EXPOSE 8080
+ENTRYPOINT ["dotnet", "Api.LibrosLibre.WebApi.dll"]
