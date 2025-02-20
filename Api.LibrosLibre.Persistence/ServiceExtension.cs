@@ -17,6 +17,7 @@ namespace Api.LibrosLibre.Persistence
             services.AddScoped<IImageRepository, ImageRepository>();
             services.AddScoped<IUserBookRepository, UserBookRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IFavoriteRepository, FavoriteRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;

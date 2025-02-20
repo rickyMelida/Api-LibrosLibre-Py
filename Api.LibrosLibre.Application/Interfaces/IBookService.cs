@@ -11,6 +11,8 @@ namespace Api.LibrosLibre.Application
         Task<Book> SetNewBook(BookDTORequest bookRequest);
         Task<List<BookDTOResponse>> SearchBook(string keyword);
         Task<List<BookDTOResponse>> GetBooksByUser(int userId);
+        Task<List<BookDTOResponse>> GetFavoritesBooks(int userId);
+        Task<int> SetFavoriteBook(int userId, int bookId);
 
     }
 }

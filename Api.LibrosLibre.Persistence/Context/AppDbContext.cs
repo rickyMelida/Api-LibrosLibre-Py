@@ -12,6 +12,7 @@ namespace Api.LibrosLibre.Persistence
         public DbSet<UserBook> UserBooks { get; set; }
         public DbSet<BookState> BookStates { get; set; }
         public DbSet<TypeTransaction> TypeTransactions { get; set; }
+        public DbSet<Favorite> Favorites { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -24,6 +25,7 @@ namespace Api.LibrosLibre.Persistence
             modelBuilder.ApplyConfiguration(new UserBookConfiguration());
             modelBuilder.ApplyConfiguration(new BookStateConfiguration());
             modelBuilder.ApplyConfiguration(new TypeTransactionConfiguration());
+            modelBuilder.ApplyConfiguration(new FavoriteConfiguration());
         }
     }
 }

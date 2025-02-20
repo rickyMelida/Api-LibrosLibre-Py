@@ -7,7 +7,7 @@ namespace Api.LibrosLibre.WebApi
 {
     [ApiController]
     [Route("api/books")]
-    public class BookController: ControllerBase
+    public class BookController : ControllerBase
     {
         private readonly IBookService _bookService;
         private readonly IImagesService _bookImagesService;
@@ -17,7 +17,7 @@ namespace Api.LibrosLibre.WebApi
             _bookService = bookService;
             _bookImagesService = bookImagesService;
         }
-        
+
 
         [HttpGet("get-book-details")]
         [Authorize]
@@ -29,7 +29,7 @@ namespace Api.LibrosLibre.WebApi
         }
 
         [HttpGet("get-main-books")]
-        public  async Task<ActionResult<List<Image>>> GetMainBooks()
+        public async Task<ActionResult<List<Image>>> GetMainBooks()
         {
             var images = await _bookImagesService.GetRelevantBookImages();
             return Ok(images);
@@ -43,28 +43,28 @@ namespace Api.LibrosLibre.WebApi
         }
 
         [HttpGet("get-recent-books")]
-        public  async Task<ActionResult<List<BookDTOResponse>>> GetRecentBooks([FromQuery] int amount)
+        public async Task<ActionResult<List<BookDTOResponse>>> GetRecentBooks([FromQuery] int amount)
         {
             var books = await _bookService.GetRecentsBooks(amount);
             return Ok(books);
         }
 
         [HttpGet("get-other-books")]
-        public  async Task<ActionResult<List<BookDTOResponse>>> GetOtherBooks([FromQuery] int amount)
+        public async Task<ActionResult<List<BookDTOResponse>>> GetOtherBooks([FromQuery] int amount)
         {
             var books = await _bookService.GetOthersBooks(amount);
             return Ok(books);
         }
 
-        [HttpPost]
+        [HttpPost("set-book")]
         [Authorize]
-        public async Task<ActionResult<BookDTOResponse>> SetBook(BookDTORequest book)
+        public async Task<ActionResult<BookDTOResponse>> SetBook([FromBody] BookDTORequest book)
         {
             var createdBook = await _bookService.SetNewBook(book);
-            
+
             if (createdBook == null)
                 return BadRequest();
-            
+
             return Ok(createdBook);
         }
 
@@ -83,6 +83,21 @@ namespace Api.LibrosLibre.WebApi
             return Ok(result);
         }
 
+        [HttpGet("get-favorites-books")]
+        [Authorize]
+        public async Task<ActionResult<List<BookDTOResponse>>> GetFavoritesBooks([FromQuery] int userId)
+        {
+            var result = await _bookService.GetFavoritesBooks(userId);
+            return Ok(result);
+        }
+
+        [HttpPost("set-favorite-book")]
+        [Authorize]
+        public async Task<ActionResult<int>> SetFavoriteBook([FromQuery] int userId, [FromQuery] int bookId)
+        {
+            var result = await _bookService.SetFavoriteBook(userId, bookId);
+            return Ok(result);
+        }
 
     }
 }
