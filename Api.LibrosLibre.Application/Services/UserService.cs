@@ -28,9 +28,19 @@ namespace Api.LibrosLibre.Application
             return await _userRepository.GetUserById(id);
         }
 
+        public async Task<User> GetUserByMail(dynamic mail)
+        {
+            return await _userRepository.GetUserByMail(mail);    
+        }
+
         public Task<List<User>> GetUsers()
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<bool> IsUserValid(User user)
+        {
+            return await _userRepository.IsUserValid(user);
         }
 
         public Task<User> UpdateUser(User user)

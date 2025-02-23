@@ -34,9 +34,20 @@ namespace Api.LibrosLibre.Persistence
             return _context.Users.Where(e => e.Id == id).FirstAsync();
         }
 
+        public async Task<User> GetUserByMail(string mail)
+        {
+            return await _context.Users.Where(e => e.Email == mail).FirstAsync();
+        }
+
         public Task<List<User>> GetUsers()
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<bool> IsUserValid(User user)
+        {
+            var existingUser = await _context.Users.Where(e => e.Email == user.Email && e.Name == user.Name).FirstOrDefaultAsync();
+            return existingUser != null;
         }
 
         public Task<bool> UpdateUser(User user)

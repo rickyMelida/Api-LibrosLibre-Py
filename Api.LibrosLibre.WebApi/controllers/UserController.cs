@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Api.LibrosLibre.Application;
 using Api.LibrosLibre.Domain;
 using Microsoft.AspNetCore.Authorization;
@@ -18,9 +19,21 @@ namespace Api.LibrosLibre.WebApi
 
         [HttpGet("get-user")]
         [Authorize]
-        public string GetUser()
+        public async Task<ActionResult<string>> GetUser()
         {
-            return "User";
+            var bearerToken = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(bearerToken) as System.IdentityModel.Tokens.Jwt.JwtSecurityToken;
+            var payload = jsonToken?.Payload;
+
+            if(payload == null)
+                return BadRequest();
+
+            var user = await _userService.GetUserByMail(payload["email"]);
+            if(user == null)
+                return BadRequest();
+
+            return Ok(user);
         }
 
         [HttpPost("set-user")]

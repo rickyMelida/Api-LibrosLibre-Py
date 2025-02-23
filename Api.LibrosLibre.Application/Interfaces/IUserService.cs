@@ -6,9 +6,11 @@ namespace Api.LibrosLibre.Application
     {
         Task<List<User>> GetUsers();
         Task<User> GetUserById(int id);
+        Task<User> GetUserByMail(dynamic mail);
         Task<User> CreateUser(User user);
         Task<User> UpdateUser(User user);
         Task<bool> DeleteUser(int id);
+        Task<bool> IsUserValid(User user);
     }
 
 }
