@@ -9,13 +9,24 @@ namespace Api.LibrosLibre.Application
 
         public UserService(IUserRepository userRepository, IUnitOfWork unitOfWork) =>
             (_userRepository, _unitOfWork) = (userRepository, unitOfWork);
-             
+
         public async Task<User> CreateUser(User user)
         {
-            await _userRepository.CreateUser(user);
-            await _unitOfWork.Save();
-            
-            return user;
+            try
+            {
+                bool existsUser = await _userRepository.IsUserValid(user);
+
+                if (existsUser) return null;
+
+                await _userRepository.CreateUser(user);
+                await _unitOfWork.Save();
+
+                return user;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         public Task<bool> DeleteUser(int id)
@@ -30,7 +41,7 @@ namespace Api.LibrosLibre.Application
 
         public async Task<User> GetUserByMail(dynamic mail)
         {
-            return await _userRepository.GetUserByMail(mail);    
+            return await _userRepository.GetUserByMail(mail);
         }
 
         public Task<List<User>> GetUsers()

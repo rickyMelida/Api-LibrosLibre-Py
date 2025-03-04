@@ -8,7 +8,7 @@ namespace Api.LibrosLibre.WebApi
 {
     [ApiController]
     [Route("api/users")]
-    public class UserController: ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
 
@@ -26,11 +26,11 @@ namespace Api.LibrosLibre.WebApi
             var jsonToken = handler.ReadToken(bearerToken) as System.IdentityModel.Tokens.Jwt.JwtSecurityToken;
             var payload = jsonToken?.Payload;
 
-            if(payload == null)
+            if (payload == null)
                 return BadRequest();
 
             var user = await _userService.GetUserByMail(payload["email"]);
-            if(user == null)
+            if (user == null)
                 return BadRequest();
 
             return Ok(user);
@@ -40,11 +40,19 @@ namespace Api.LibrosLibre.WebApi
         [Authorize]
         public ActionResult<User> SetUser(User user)
         {
-            var result = _userService.CreateUser(user);
-            if(result != null)
-                return Ok(user);
+            try
+            {
+                var result = _userService.CreateUser(user);
 
-            return BadRequest();
+                if (result != null)
+                    return Created();
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
     }
