@@ -26,7 +26,7 @@ namespace Api.LibrosLibre.Persistence
 
         public async Task<int> GetLastId()
         {
-            return await _context.Users.MaxAsync(x => x.Id);
+            return await _context.Users.AnyAsync() ? await _context.Users.MaxAsync(x => x.Id) : 0;
         }
 
         public Task<User> GetUserById(int id)

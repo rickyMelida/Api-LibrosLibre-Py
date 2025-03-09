@@ -17,7 +17,8 @@ namespace Api.LibrosLibre.Application
                 bool existsUser = await _userRepository.IsUserValid(user);
 
                 if (existsUser) return null;
-
+                
+                user.Id = await _userRepository.GetLastId() + 1;
                 await _userRepository.CreateUser(user);
                 await _unitOfWork.Save();
 
