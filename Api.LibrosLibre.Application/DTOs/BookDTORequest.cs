@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 
-namespace Api.LibrosLibre.Application
+namespace Api.LibrosLibre.Application.DTOs
 {
     public class BookDTORequest : BookDTO
     {

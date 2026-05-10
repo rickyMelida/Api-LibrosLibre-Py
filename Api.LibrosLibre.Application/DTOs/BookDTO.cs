@@ -1,4 +1,4 @@
-namespace Api.LibrosLibre.Application
+namespace Api.LibrosLibre.Application.DTOs
 {
     public class BookDTO
     {

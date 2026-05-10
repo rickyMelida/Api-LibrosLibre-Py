@@ -1,6 +1,8 @@
 using Api.LibrosLibre.Application;
-using Api.LibrosLibre.Domain;
-using Microsoft.AspNetCore.Authorization;
+using Api.LibrosLibre.Application.Commands;
+using Api.LibrosLibre.Application.DTOs;
+using Api.LibrosLibre.Application.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.LibrosLibre.WebApi
@@ -9,93 +11,83 @@ namespace Api.LibrosLibre.WebApi
     [Route("api/books")]
     public class BookController : ControllerBase
     {
-        private readonly IBookService _bookService;
-        private readonly IImagesService _bookImagesService;
+        private readonly IMediator _mediator;
 
-        public BookController(IBookService bookService, IImagesService bookImagesService)
+        public BookController(IMediator mediator)
         {
-            _bookService = bookService;
-            _bookImagesService = bookImagesService;
+            _mediator = mediator;
         }
 
 
         [HttpGet("get-book-details")]
-        [Authorize]
         public async Task<ActionResult<BookDTOResponse>> GetBookDetail([FromQuery] int id)
         {
-            var book = await _bookService.GetBook(id);
+            var book = await _mediator.Send(new GetBookDetailsQuery(id));
 
             return Ok(book);
         }
 
         [HttpGet("get-main-books")]
-        public async Task<ActionResult<List<Image>>> GetMainBooks()
+        public async Task<ActionResult<List<ImageDTO>>> GetMainBooks()
         {
-            var images = await _bookImagesService.GetRelevantBookImages();
+            var images = await _mediator.Send(new GetMainBooksQuery());
             return Ok(images);
         }
 
         [HttpGet("get-featured-books")]
         public async Task<ActionResult<List<BookDTOResponse>>> GetFeaturedBooks([FromQuery] int amount)
         {
-            var books = await _bookService.GetFeaturedBooks(amount);
+            var books = await _mediator.Send(new GetFeaturedBooksQuery(amount));
             return Ok(books);
         }
 
         [HttpGet("get-recent-books")]
         public async Task<ActionResult<List<BookDTOResponse>>> GetRecentBooks([FromQuery] int amount)
         {
-            var books = await _bookService.GetRecentsBooks(amount);
+            var books = await _mediator.Send(new GetRecentBooksQuery(amount));
             return Ok(books);
         }
 
         [HttpGet("get-other-books")]
         public async Task<ActionResult<List<BookDTOResponse>>> GetOtherBooks([FromQuery] int amount)
         {
-            var books = await _bookService.GetOthersBooks(amount);
+            var books = await _mediator.Send(new GetOtherBooksQuery(amount));
             return Ok(books);
         }
 
         [HttpPost("set-book")]
-        [Authorize]
-        public async Task<ActionResult<BookDTOResponse>> SetBook([FromBody] BookDTORequest book)
+        public async Task<ActionResult<BookDTOResponse>> SetBook([FromBody] CreateBookCommand command)
         {
-            var createdBook = await _bookService.SetNewBook(book);
+            var createdBook = await _mediator.Send(command);
 
-            if (createdBook == null)
-                return BadRequest();
-
-            return Ok(createdBook);
+            return CreatedAtAction(nameof(GetBookDetail), createdBook);
         }
 
         [HttpGet("search-books")]
-        public async Task<ActionResult<List<BookDTOResponse>>> SearchBook(string keyword)
+        public async Task<ActionResult<List<BookDTOResponse>>> SearchBook([FromQuery] string keyword)
         {
-            var result = await _bookService.SearchBook(keyword);
+            var result = await _mediator.Send(new SearchBookQuery(keyword));
             return Ok(result);
         }
 
         [HttpGet("get-books-by-user")]
-        [Authorize]
         public async Task<ActionResult<List<BookDTOResponse>>> GetBooksByUser([FromQuery] int userId)
         {
-            var result = await _bookService.GetBooksByUser(userId);
+            var result = await _mediator.Send(new GetBookByUserQuery(userId));
             return Ok(result);
         }
 
         [HttpGet("get-favorites-books")]
-        [Authorize]
         public async Task<ActionResult<List<BookDTOResponse>>> GetFavoritesBooks([FromQuery] int userId)
         {
-            var result = await _bookService.GetFavoritesBooks(userId);
+            var result = await _mediator.Send(new GetFavoriteBookQuery(userId));
             return Ok(result);
         }
 
         [HttpPost("set-favorite-book")]
-        [Authorize]
         public async Task<ActionResult<int>> SetFavoriteBook([FromQuery] int userId, [FromQuery] int bookId)
         {
-            var result = await _bookService.SetFavoriteBook(userId, bookId);
+            var result = await _mediator.Send(new SetFavoriteBookCommand(userId, bookId));
             return Ok(result);
         }
 
