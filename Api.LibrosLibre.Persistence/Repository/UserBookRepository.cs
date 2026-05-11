@@ -14,9 +14,16 @@ namespace Api.LibrosLibre.Persistence
 
         public async Task<bool> CreateUserBook(UserBook userBook)
         {
-            await _context.UserBooks.AddAsync(userBook);
-            await _unitOfWork.Save();
-            return true;
+			try
+			{
+				await _context.UserBooks.AddAsync(userBook);
+				await _context.SaveChangesAsync();
+				return true;
+			}
+			catch (Exception ex)
+			{
+				throw new Exception($"Error creating user book: {ex.Message}");
+			}
         }
 
         public Task<bool> DeleteUserBook(int id)

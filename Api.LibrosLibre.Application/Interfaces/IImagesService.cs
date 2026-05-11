@@ -7,7 +7,7 @@ namespace Api.LibrosLibre.Application
     {
         Task<List<Image>> GetRelevantBookImages();
         Task<List<Image>> GetImagesByBookId(int bookId);
-        Task<int> SetImages(BookDTORequest bookRequest, int bookId);
+        Task SetImages(BookDTORequest bookRequest, int bookId);
     }
 
 }

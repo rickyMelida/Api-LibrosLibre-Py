@@ -14,9 +14,16 @@ namespace Api.LibrosLibre.Persistence
 
         public async Task<Image> CreateImage(Image image)
         {
-            await _context.Images.AddAsync(image);
-            await _unitOfWork.Save();
-            return image;
+			try
+			{	
+				await _context.Images.AddAsync(image);
+				await _context.SaveChangesAsync();
+
+				return image;
+			}catch (Exception ex)
+			{
+				throw new Exception($"Error creating image: {ex.Message}");
+			}
         }
 
         public Task<bool> DeleteImage(int id)

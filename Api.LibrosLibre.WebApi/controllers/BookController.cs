@@ -56,7 +56,7 @@ namespace Api.LibrosLibre.WebApi
         }
 
         [HttpPost("set-book")]
-        public async Task<ActionResult<BookDTOResponse>> SetBook([FromBody] CreateBookCommand command)
+        public async Task<ActionResult<BookDTOResponse>> SetBook([FromForm] CreateBookCommand command)
         {
             var createdBook = await _mediator.Send(command);
 

@@ -17,15 +17,13 @@ namespace Api.LibrosLibre.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-            
-            modelBuilder.ApplyConfiguration(new BookConfiguration());
-            modelBuilder.ApplyConfiguration(new ImageConfiguration());
-            modelBuilder.ApplyConfiguration(new UserConfiguration());
-            modelBuilder.ApplyConfiguration(new UserBookConfiguration());
-            modelBuilder.ApplyConfiguration(new BookStateConfiguration());
-            modelBuilder.ApplyConfiguration(new TypeTransactionConfiguration());
-            modelBuilder.ApplyConfiguration(new FavoriteConfiguration());
+    		modelBuilder.Entity<Book>().ToTable("books", schema: "books_free_py");
+			modelBuilder.Entity<Image>().ToTable("images", schema: "books_free_py");
+			modelBuilder.Entity<User>().ToTable("users", schema: "books_free_py");
+			modelBuilder.Entity<UserBook>().ToTable("users_book", schema: "books_free_py");
+			modelBuilder.Entity<BookState>().ToTable("book_states", schema: "books_free_py");
+			modelBuilder.Entity<TypeTransaction>().ToTable("type_transaction", schema: "books_free_py");
+			modelBuilder.Entity<Favorite>().ToTable("favorites", schema: "books_free_py");
         }
     }
 }

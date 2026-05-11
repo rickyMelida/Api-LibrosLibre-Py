@@ -1,12 +1,11 @@
 using MediatR;
 
 namespace Api.LibrosLibre.Application.Commands
-		{
-	public class CreateBookHandler : IRequestHandler<CreateBookCommand, int>
+{	public class CreateBookHandler(IBookService _bookService) : IRequestHandler<CreateBookCommand, int>
 	{
-		public Task<int> Handle(CreateBookCommand request, CancellationToken cancellationToken)
+		public async Task<int> Handle(CreateBookCommand request, CancellationToken cancellationToken)
 		{
-			throw new NotImplementedException();
+			return await _bookService.SetNewBook(request.bookRequest);
 		}
 	}	
 }
