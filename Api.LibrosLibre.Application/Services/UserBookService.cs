@@ -12,7 +12,7 @@ namespace Api.LibrosLibre.Application
 
         public async Task<UserBook> GetUserBookByBookId(int bookId)
         {
-            return await _userBookRepository.GetUserBookById(bookId);
+            return await _userBookRepository.GetUserBookByBookId(bookId);
         }
 
         public async Task<List<UserBook>> GetUserBookByUserId(int userId)

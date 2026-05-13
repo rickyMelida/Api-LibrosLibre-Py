@@ -2,11 +2,13 @@ using MediatR;
 
 namespace Api.LibrosLibre.Application.Commands
 {
-	public class SetFavoriteBookHandler : IRequestHandler<SetFavoriteBookCommand, int>
+	public class SetFavoriteBookHandler(
+		IBookService _bookService
+	) : IRequestHandler<SetFavoriteBookCommand, int>
 	{
-		public Task<int> Handle(SetFavoriteBookCommand request, CancellationToken cancellationToken)
+		public async Task<int> Handle(SetFavoriteBookCommand request, CancellationToken cancellationToken)
 		{
-			throw new NotImplementedException();
+			return await _bookService.SetFavoriteBook(request.userId, request.bookId);
 		}
 	}
 }

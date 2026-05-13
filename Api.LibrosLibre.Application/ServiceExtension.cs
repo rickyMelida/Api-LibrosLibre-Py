@@ -1,3 +1,4 @@
+using Api.LibrosLibre.Application.Mappings;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Api.LibrosLibre.Application 
@@ -12,6 +13,9 @@ namespace Api.LibrosLibre.Application
             services.AddScoped<IUserService, UserService>();
 			services.AddMediatR(cfg => 
 				cfg.RegisterServicesFromAssembly(typeof(ServiceExtension).Assembly));
+			services.AddAutoMapper(
+				typeof(ImageProfile).Assembly
+			);
         }
 
     }

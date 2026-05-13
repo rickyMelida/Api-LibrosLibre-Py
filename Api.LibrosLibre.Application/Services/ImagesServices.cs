@@ -1,25 +1,28 @@
 using Api.LibrosLibre.Application.DTOs;
 using Api.LibrosLibre.Domain;
+using AutoMapper;
 
 namespace Api.LibrosLibre.Application
 {
     public class ImagesServices : IImagesService
     {
         private readonly IImageRepository _imageRepository;
+		private readonly IMapper _mapper;
 
-        public ImagesServices(IImageRepository imageRepository) =>
-            _imageRepository = imageRepository;
+        public ImagesServices(IImageRepository imageRepository, IMapper mapper) =>
+            (_imageRepository, _mapper) = (imageRepository, mapper);
 
-        public async Task<List<Image>> GetImagesByBookId(int bookId)
+        public async Task<List<ImageDTO>> GetImagesByBookId(int bookId)
         {
-            return await _imageRepository.GetImageByBookId(bookId);
+			var images = await _imageRepository.GetImageByBookId(bookId);
+            return _mapper.Map<List<ImageDTO>>(images);
         }
 
-        public async Task<List<Image>> GetRelevantBookImages()
+        public async Task<List<ImageDTO>> GetRelevantBookImages()
         {
             var images = await _imageRepository.GetImages();
 
-            return images.ToList();
+            return _mapper.Map<List<ImageDTO>>(images);
         }
 
         public async Task SetImages(BookDTORequest bookRequest, int bookId)

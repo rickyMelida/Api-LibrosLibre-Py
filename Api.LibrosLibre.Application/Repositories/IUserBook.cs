@@ -11,5 +11,6 @@ namespace Api.LibrosLibre.Application
         Task<bool> UpdateUserBook(UserBook userBook);
         Task<bool> DeleteUserBook(int id);
         Task<int> GetLastId();
-    }
+		Task<UserBook> GetUserBookByBookId(int bookId);
+	}
 }

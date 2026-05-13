@@ -3,11 +3,13 @@ using MediatR;
 
 namespace Api.LibrosLibre.Application.Queries
 {
-	public class GetMainBooksHandler() : IRequestHandler<GetMainBooksQuery, List<ImageDTO>>
+	public class GetMainBooksHandler(
+		IImagesService _bookImagesService
+	) : IRequestHandler<GetMainBooksQuery, List<ImageDTO>>
 	{
 		public async Task<List<ImageDTO>> Handle(GetMainBooksQuery request, CancellationToken ct)
 		{
-			return new List<ImageDTO>();	
+			return await _bookImagesService.GetRelevantBookImages();
 		}
 	} 
 }

@@ -3,11 +3,13 @@ using MediatR;
 
 namespace Api.LibrosLibre.Application.Queries
 {
-	public class GetOtherBooksHandler() : IRequestHandler<GetOtherBooksQuery, List<BookDTOResponse>>
+	public class GetOtherBooksHandler(
+		IBookService _bookService
+	) : IRequestHandler<GetOtherBooksQuery, List<BookDTOResponse>>
 	{
 		public async Task<List<BookDTOResponse>> Handle(GetOtherBooksQuery request, CancellationToken ct)
 		{
-			return new List<BookDTOResponse>();	
+			return await _bookService.GetOthersBooks(request.amount);
 		}
 	}
 }

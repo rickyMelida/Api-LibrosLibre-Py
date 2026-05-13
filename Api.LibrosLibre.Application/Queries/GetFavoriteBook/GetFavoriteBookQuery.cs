@@ -3,5 +3,5 @@ using MediatR;
 
 namespace Api.LibrosLibre.Application.Queries
 {
-	public record GetFavoriteBookQuery(int userId) : IRequest<BookDTOResponse>;
+	public record GetFavoriteBookQuery(int userId) : IRequest<List<BookDTOResponse>>;
 }

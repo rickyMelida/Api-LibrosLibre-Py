@@ -3,11 +3,13 @@ using MediatR;
 
 namespace Api.LibrosLibre.Application.Queries
 {
-	public class GetFavoriteBookHandler() : IRequestHandler<GetFavoriteBookQuery, BookDTOResponse>
+	public class GetFavoriteBookHandler(
+		IBookService _bookService
+	) : IRequestHandler<GetFavoriteBookQuery, List<BookDTOResponse>>
 	{
-		public async Task<BookDTOResponse> Handle(GetFavoriteBookQuery request, CancellationToken ct)
+		public async Task<List<BookDTOResponse>> Handle(GetFavoriteBookQuery request, CancellationToken ct)
 		{
-			return new BookDTOResponse();	
+			return await _bookService.GetFavoritesBooks(request.userId);
 		}
 	}
 }
