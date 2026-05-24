@@ -6,6 +6,7 @@ namespace Api.LibrosLibre.Application
     {
         Task<List<User>> GetUsers();
         Task<User> GetUserById(int id);
+        Task<User> GetUserByUid(string uid);
         Task<User> GetUserByMail(string mail);
         Task<bool> CreateUser(User user);
         Task<bool> UpdateUser(User user);

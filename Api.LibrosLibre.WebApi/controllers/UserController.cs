@@ -1,6 +1,7 @@
-using System.Threading.Tasks;
-using Api.LibrosLibre.Application;
-using Api.LibrosLibre.Domain;
+using Api.LibrosLibre.Application.Commands;
+using Api.LibrosLibre.Application.DTOs;
+using Api.LibrosLibre.Application.Queries;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,49 +11,30 @@ namespace Api.LibrosLibre.WebApi
     [Route("api/users")]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly IMediator _mediator;
 
-        public UserController(IUserService userService)
+        public UserController(IMediator mediator)
         {
-            _userService = userService;
+            _mediator = mediator;
         }
 
-        [HttpGet("get-user")]
-        [Authorize]
-        public async Task<ActionResult<string>> GetUser()
+        [HttpGet("get-user-by-uid")]
+        public async Task<ActionResult<UserDTO>> GetUser([FromQuery] string uid)
         {
-            var bearerToken = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
-            var jsonToken = handler.ReadToken(bearerToken) as System.IdentityModel.Tokens.Jwt.JwtSecurityToken;
-            var payload = jsonToken?.Payload;
-
-            if (payload == null)
-                return BadRequest();
-
-            var user = await _userService.GetUserByMail(payload["email"]);
-            if (user == null)
-                return BadRequest();
-
-            return Ok(user);
+			var user = await _mediator.Send(new GetUserByUidQuery(uid));
+            
+			if(user == null)
+				return NotFound();
+			
+			return Ok(user);
         }
 
         [HttpPost("set-user")]
-        [Authorize]
-        public ActionResult<User> SetUser(User user)
+        public async Task<ActionResult<UserDTO>> SetUser([FromBody] CreateUserCommand user)
         {
-            try
-            {
-                var result = _userService.CreateUser(user);
-
-                if (result != null)
-                    return Created();
-
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+           var createdUser = await _mediator.Send(user);
+		   
+		   return Created("User Created Successfully", createdUser);
         }
 
     }

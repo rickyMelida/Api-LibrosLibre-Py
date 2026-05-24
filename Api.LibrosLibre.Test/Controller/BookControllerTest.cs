@@ -5,7 +5,6 @@ using Api.LibrosLibre.WebApi;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using NUnit.Framework;
 
 namespace Api.LibrosLibre.Test.Controller
 {

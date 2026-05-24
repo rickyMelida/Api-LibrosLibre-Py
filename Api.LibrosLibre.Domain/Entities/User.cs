@@ -4,7 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Api.LibrosLibre.Domain 
 {
     [Table("users", Schema = "books_free_py")]
-	public class User {
+	public class User 
+	{
         [Key]
 		[Column("id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -18,5 +19,9 @@ namespace Api.LibrosLibre.Domain
 
 		[Column("phone_number")]
         public string Phone { get; set; }
-    }
+
+		[Column("uid")]
+		public string Uid { get; set; }	    
+	
+	}
 }

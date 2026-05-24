@@ -1,4 +1,6 @@
+using Api.LibrosLibre.Application.DTOs;
 using Api.LibrosLibre.Domain;
+using AutoMapper;
 
 namespace Api.LibrosLibre.Application
 {
@@ -6,20 +8,21 @@ namespace Api.LibrosLibre.Application
     {
         private readonly IUserRepository _userRepository;
         private readonly IUnitOfWork _unitOfWork;
+		private readonly IMapper _mapper;
 
-        public UserService(IUserRepository userRepository, IUnitOfWork unitOfWork) =>
-            (_userRepository, _unitOfWork) = (userRepository, unitOfWork);
+        public UserService(IUserRepository userRepository, IUnitOfWork unitOfWork, IMapper mapper) =>
+            (_userRepository, _unitOfWork, _mapper) = (userRepository, unitOfWork, mapper);
 
-        public async Task<User> CreateUser(User user)
+        public async Task<UserDTO> CreateUser(UserDTO user)
         {
             try
             {
-                bool existsUser = await _userRepository.IsUserValid(user);
+				var userEntity = _mapper.Map<User>(user);
+                bool existsUser = await _userRepository.IsUserValid(userEntity);
 
                 if (existsUser) return null;
                 
-                user.Id = await _userRepository.GetLastId() + 1;
-                await _userRepository.CreateUser(user);
+                await _userRepository.CreateUser(userEntity);
                 await _unitOfWork.Save();
 
                 return user;
@@ -30,35 +33,48 @@ namespace Api.LibrosLibre.Application
             }
         }
 
-        public Task<bool> DeleteUser(int id)
+		public Task<bool> DeleteUser(int id)
+		{
+			throw new NotImplementedException();
+		}
+
+		public async Task<UserDTO> GetUserById(int id)
         {
-            throw new NotImplementedException();
+            var user = await _userRepository.GetUserById(id);
+            return _mapper.Map<UserDTO>(user);
         }
 
-        public async Task<User> GetUserById(int id)
+        public async Task<UserDTO> GetUserByMail(dynamic mail)
         {
-            return await _userRepository.GetUserById(id);
+            var user = await _userRepository.GetUserByMail(mail);
+            return _mapper.Map<UserDTO>(user);
         }
 
-        public async Task<User> GetUserByMail(dynamic mail)
+		public Task<UserDTO> GetUserByUid(int id)
+		{
+			throw new NotImplementedException();
+		}
+
+		public async Task<UserDTO> GetUserByUid(string uid)
+		{
+			var user = await _userRepository.GetUserByUid(uid);
+			return _mapper.Map<UserDTO>(user);
+		}
+
+		public Task<List<UserDTO>> GetUsers()
+		{
+			throw new NotImplementedException();
+		}
+
+		public async Task<bool> IsUserValid(UserDTO user)
         {
-            return await _userRepository.GetUserByMail(mail);
+			var userEntity = _mapper.Map<User>(user);
+            return await _userRepository.IsUserValid(userEntity);
         }
 
-        public Task<List<User>> GetUsers()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<bool> IsUserValid(User user)
-        {
-            return await _userRepository.IsUserValid(user);
-        }
-
-        public Task<User> UpdateUser(User user)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
+		public Task<UserDTO> UpdateUser(UserDTO user)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

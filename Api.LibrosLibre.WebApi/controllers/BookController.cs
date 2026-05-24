@@ -1,4 +1,3 @@
-using Api.LibrosLibre.Application;
 using Api.LibrosLibre.Application.Commands;
 using Api.LibrosLibre.Application.DTOs;
 using Api.LibrosLibre.Application.Queries;
