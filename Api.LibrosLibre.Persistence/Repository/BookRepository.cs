@@ -14,9 +14,16 @@ namespace Api.LibrosLibre.Persistence
 
         public async Task<Book> CreateBook(Book book)
         {
-            await _context.Books.AddAsync(book);
-            await _unitOfWork.Save();
-            return book;
+			try
+			{
+				await _context.Books.AddAsync(book);
+				await _context.SaveChangesAsync();
+				
+				return book;
+			}catch (Exception ex)
+			{
+				throw new Exception($"Error creating book: {ex.Message}");
+			}
         }
 
         public async Task<Book> GetBookById(int id)
@@ -33,15 +40,15 @@ namespace Api.LibrosLibre.Persistence
         public async Task<Book> UpdateBook(Book book)
         {
             _context.Books.Update(book);
-            await _unitOfWork.Save();
+            await _context.SaveChangesAsync();
             return book;
         }
 
-        public Task<bool> DeleteBook(int id)
+        public async Task<bool> DeleteBook(int id)
         {
             _ = _context.Books.Remove(_context.Books.Find(id));
-            _context.SaveChanges();
-            return Task.FromResult(true);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
         public async Task<int> GetLastId()

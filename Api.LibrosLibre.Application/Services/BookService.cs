@@ -1,3 +1,4 @@
+using Api.LibrosLibre.Application.DTOs;
 using Api.LibrosLibre.Domain;
 
 namespace Api.LibrosLibre.Application
@@ -9,16 +10,14 @@ namespace Api.LibrosLibre.Application
         private readonly IUserBookService _userBookService;
         private readonly IUserService _userService;
         private readonly IFavoriteRepository _favoriteRepository;
-        private readonly IUnitOfWork _unitOfWork;
 
         public BookService(IBookRepository bookRepository,
                            IImagesService bookImagesService,
                            IUserBookService userBookService,
                            IUserService userService,
-                           IFavoriteRepository favoriteRepository,
-                           IUnitOfWork unitOfWork) =>
-            (_bookRepository, _bookImagesService, _userBookService, _userService, _favoriteRepository, _unitOfWork) =
-            (bookRepository, bookImagesService, userBookService, userService, favoriteRepository, unitOfWork);
+                           IFavoriteRepository favoriteRepository) =>
+            (_bookRepository, _bookImagesService, _userBookService, _userService, _favoriteRepository) =
+            (bookRepository, bookImagesService, userBookService, userService, favoriteRepository);
 
         public async Task<BookDTOResponse> GetBook(int id)
         {
@@ -219,41 +218,36 @@ namespace Api.LibrosLibre.Application
                 User = userId
             });
 
-            await _unitOfWork.Save();
-
             return result.Id;
         }
 
-        public async Task<Book> SetNewBook(BookDTORequest bookRequest)
+        public async Task<int> SetNewBook(BookDTORequest bookRequest)
         {
             Book book = await SetBook(bookRequest);
 
             await _bookImagesService.SetImages(bookRequest, book.Id);
             await _userBookService.Set(bookRequest, book.Id);
 
-            return book;
+            return book.Id;
         }
 
         private async Task<Book> SetBook(BookDTORequest bookRequest)
         {
-            int bookId = await _bookRepository.GetLastId() + 1;
             Book book = new Book()
             {
-                Id = bookId,
                 Author = bookRequest.Author,
                 Available = true,
                 LitleDescription = bookRequest.Description,
                 Title = bookRequest.Title,
-                OtherDetails = bookRequest.OtherDetail ?? "",
+                OtherDetail = bookRequest.OtherDetail ?? "",
                 Price = bookRequest.Price,
                 State = bookRequest.State,
                 TransactionType = bookRequest.TransactionType,
-                UploadDate = DateTime.UtcNow,
+                UploadDate = DateOnly.FromDateTime(DateTime.UtcNow),
                 Year = bookRequest.Year ?? ""
             };
 
             await _bookRepository.CreateBook(book);
-            await _unitOfWork.Save();
 
             return book;
         }

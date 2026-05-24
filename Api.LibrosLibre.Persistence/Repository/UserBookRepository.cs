@@ -14,9 +14,16 @@ namespace Api.LibrosLibre.Persistence
 
         public async Task<bool> CreateUserBook(UserBook userBook)
         {
-            await _context.UserBooks.AddAsync(userBook);
-            await _unitOfWork.Save();
-            return true;
+			try
+			{
+				await _context.UserBooks.AddAsync(userBook);
+				await _context.SaveChangesAsync();
+				return true;
+			}
+			catch (Exception ex)
+			{
+				throw new Exception($"Error creating user book: {ex.Message}");
+			}
         }
 
         public Task<bool> DeleteUserBook(int id)
@@ -29,7 +36,12 @@ namespace Api.LibrosLibre.Persistence
             return await _context.UserBooks.AnyAsync() ? await _context.UserBooks.MaxAsync(x => x.Id) : 0;
         }
 
-        public async Task<UserBook> GetUserBookById(int id)
+		public async Task<UserBook> GetUserBookByBookId(int bookId)
+		{
+			return await _context.UserBooks.Where(e => e.Book == bookId).FirstAsync();
+		}
+
+		public async Task<UserBook> GetUserBookById(int id)
         {
             return await _context.UserBooks.Where(e => e.Id == id).FirstAsync();
         }
