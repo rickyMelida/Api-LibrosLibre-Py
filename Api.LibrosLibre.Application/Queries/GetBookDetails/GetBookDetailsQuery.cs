@@ -1,7 +1,8 @@
 using Api.LibrosLibre.Application.DTOs;
+using Api.LibrosLibre.Domain.Common;
 using MediatR;
 
 namespace Api.LibrosLibre.Application.Queries
 {
-	public record GetBookDetailsQuery(int Id) : IRequest<BookDTOResponse>;	
+	public record GetBookDetailsQuery(int Id) : IRequest<ApiResponse<BookDTOResponse>>;	
 }

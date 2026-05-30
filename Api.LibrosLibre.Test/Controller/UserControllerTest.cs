@@ -1,6 +1,7 @@
 using Api.LibrosLibre.Application.Commands;
 using Api.LibrosLibre.Application.DTOs;
 using Api.LibrosLibre.Application.Queries;
+using Api.LibrosLibre.Domain.Common;
 using Api.LibrosLibre.WebApi;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -27,21 +28,34 @@ namespace Api.LibrosLibre.Test.Controller
 			var userRequest = new UserDTO { Name = "Test User" };
 			var command = new CreateUserCommand(userRequest);
 			var expectedUser = new UserDTO { Id = 1, Name = "Test User" };
-			_mediatorMock.Setup(m => m.Send(It.IsAny<IRequest<UserDTO>>(), default)).ReturnsAsync(expectedUser);
-
+			var resultExpected = new ApiResponse<UserDTO> { Data = expectedUser, Message = "User created successfully", StatusCode = 201 };
+			 _mediatorMock.Setup(m => m.Send(It.IsAny<CreateUserCommand>(), default)).ReturnsAsync(resultExpected);
+			
 			var result = await _controller.SetUser(command);
 
 			var createdResult = result.Result as CreatedResult;
-			Assert.That(201, Is.EqualTo(createdResult.StatusCode));
-			Assert.That(createdResult.Value, Is.EqualTo(expectedUser));
+			
+			Assert.That(createdResult, Is.Not.Null);
+			Assert.That(createdResult.Value, Is.EqualTo(resultExpected));
+			Assert.AreEqual(201, createdResult.StatusCode);
 		}
 
 		[Test]
 		public async Task Should_Get_User_Details_By_Uid()
 		{
-			var uid = "test-uid";
-			var expectedUser = new UserDTO { Id = 1, Name = "Test User" };
-			_mediatorMock.Setup(m => m.Send(It.IsAny<GetUserByUidQuery>(), default)).ReturnsAsync(expectedUser);
+			string uid = "12s12s5ss";
+			var expectedUser = new UserDTO { Id = 1, Name = "Test User", Uid = uid };
+			var resultExpected = new ApiResponse<UserDTO> { Data = expectedUser, Message = "User retrieved successfully", StatusCode = 200 };
+			
+			_mediatorMock.Setup(s => s.Send(It.IsAny<GetUserByUidQuery>(), default)).ReturnsAsync(resultExpected);
+
+			var result = await _controller.GetUser(uid);
+			var okResult = result.Result as OkObjectResult;
+
+
+			Assert.That(okResult, Is.Not.Null);
+			Assert.That(okResult.Value, Is.EqualTo(resultExpected));
+			Assert.AreEqual(200, okResult.StatusCode);
 		}
 
 	}

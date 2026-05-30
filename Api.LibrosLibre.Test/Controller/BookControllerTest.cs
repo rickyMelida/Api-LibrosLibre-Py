@@ -1,6 +1,7 @@
 using Api.LibrosLibre.Application.Commands;
 using Api.LibrosLibre.Application.DTOs;
 using Api.LibrosLibre.Application.Queries;
+using Api.LibrosLibre.Domain.Common;
 using Api.LibrosLibre.WebApi;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,8 @@ namespace Api.LibrosLibre.Test.Controller
 			var bookRequest = new BookDTORequest { Title = "Test Book" };
 			var command = new CreateBookCommand(bookRequest);
 			var expectedBook = new BookDTOResponse { Id = 1, Title = "Test Book" };
-			_mediatorMock.Setup(m => m.Send(It.IsAny<IRequest<BookDTOResponse>>(), default)).ReturnsAsync(expectedBook);
+			var apiResponse = new ApiResponse<int> { Data = expectedBook.Id, Message = "Libro agregado exitosamente", StatusCode = 201 };
+			_mediatorMock.Setup(m => m.Send(It.IsAny<IRequest<ApiResponse<int>>>(), default)).ReturnsAsync(apiResponse);
 
 			var result = await _controller.SetBook(command);
 
@@ -40,13 +42,14 @@ namespace Api.LibrosLibre.Test.Controller
 		{
 			var bookId = 1;
 			var expectedBook = new BookDTOResponse { Id = bookId, Title = "Test Book" };
-			_mediatorMock.Setup(m => m.Send(It.IsAny<GetBookDetailsQuery>(), default)).ReturnsAsync(expectedBook);
+			var apiResponse = new ApiResponse<BookDTOResponse> { Data = expectedBook, Message = "Book details retrieved successfully", StatusCode = 200 };
+			_mediatorMock.Setup(m => m.Send(It.IsAny<GetBookDetailsQuery>(), default)).ReturnsAsync(apiResponse);
 
 			var result = await _controller.GetBookDetail(bookId);
 
 			var okResult = result.Result as OkObjectResult;
 			Assert.That(okResult, Is.Not.Null);
-			Assert.That(okResult.Value, Is.EqualTo(expectedBook));
+			Assert.That(okResult.Value, Is.EqualTo(apiResponse));
 		}
 
 		[Test]
@@ -54,13 +57,14 @@ namespace Api.LibrosLibre.Test.Controller
 		{
 			var amount = 5;
 			var expectedBooks = new List<BookDTOResponse> { new() { Id = 1, Title = "Book 1" } };
-			_mediatorMock.Setup(m => m.Send(It.IsAny<GetFeaturedBooksQuery>(), default)).ReturnsAsync(expectedBooks);
+			var apiResponse = new ApiResponse<List<BookDTOResponse>> { Data = expectedBooks, Message = "Featured books retrieved successfully", StatusCode = 200 };
+			_mediatorMock.Setup(m => m.Send(It.IsAny<GetFeaturedBooksQuery>(), default)).ReturnsAsync(apiResponse);
 
 			var result = await _controller.GetFeaturedBooks(amount);
 
 			var okResult = result.Result as OkObjectResult;
 			Assert.That(okResult, Is.Not.Null);
-			Assert.That(okResult.Value, Is.EqualTo(expectedBooks));
+			Assert.That(okResult.Value, Is.EqualTo(apiResponse));
 		}
 
 		[Test]
@@ -68,13 +72,14 @@ namespace Api.LibrosLibre.Test.Controller
 		{
 			var keyword = "fiction";
 			var expectedBooks = new List<BookDTOResponse> { new() { Id = 1, Title = "Fiction Book" } };
-			_mediatorMock.Setup(m => m.Send(It.IsAny<SearchBookQuery>(), default)).ReturnsAsync(expectedBooks);
+			var apiResponse = new ApiResponse<List<BookDTOResponse>> { Data = expectedBooks, Message = "Books found successfully", StatusCode = 200 };
+			_mediatorMock.Setup(m => m.Send(It.IsAny<SearchBookQuery>(), default)).ReturnsAsync(apiResponse);
 
 			var result = await _controller.SearchBook(keyword);
 
 			var okResult = result.Result as OkObjectResult;
 			Assert.That(okResult, Is.Not.Null);
-			Assert.That(okResult.Value, Is.EqualTo(expectedBooks));
+			Assert.That(okResult.Value, Is.EqualTo(apiResponse));
 		}
 
 		[Test]
@@ -82,13 +87,14 @@ namespace Api.LibrosLibre.Test.Controller
 		{
 			var userId = 1;
 			var expectedBooks = new List<BookDTOResponse> { new() { Id = 1, Title = "User Book" } };
-			_mediatorMock.Setup(m => m.Send(It.IsAny<GetBookByUserQuery>(), default)).ReturnsAsync(expectedBooks);
+			var apiResponse = new ApiResponse<List<BookDTOResponse>> { Data = expectedBooks, Message = "Books retrieved successfully", StatusCode = 200 };
+			_mediatorMock.Setup(m => m.Send(It.IsAny<GetBookByUserQuery>(), default)).ReturnsAsync(apiResponse);
 
 			var result = await _controller.GetBooksByUser(userId);
 
 			var okResult = result.Result as OkObjectResult;
 			Assert.That(okResult, Is.Not.Null);
-			Assert.That(okResult.Value, Is.EqualTo(expectedBooks));
+			Assert.That(okResult.Value, Is.EqualTo(apiResponse));
 		}
 
 		[Test]
@@ -96,13 +102,14 @@ namespace Api.LibrosLibre.Test.Controller
 		{
 			var userId = 1;
 			var bookId = 1;
-			_mediatorMock.Setup(m => m.Send(It.IsAny<SetFavoriteBookCommand>(), default)).ReturnsAsync(1);
+			var apiResponse = new ApiResponse<int> { Data = 1, Message = "Book marked as favorite successfully", StatusCode = 200 };
+			_mediatorMock.Setup(m => m.Send(It.IsAny<SetFavoriteBookCommand>(), default)).ReturnsAsync(apiResponse);
 
 			var result = await _controller.SetFavoriteBook(userId, bookId);
 
 			var okResult = result.Result as OkObjectResult;
 			Assert.That(okResult, Is.Not.Null);
-			Assert.That(okResult.Value, Is.EqualTo(1));
+			Assert.That(okResult.Value, Is.EqualTo(apiResponse));
 		}
 	}
 }

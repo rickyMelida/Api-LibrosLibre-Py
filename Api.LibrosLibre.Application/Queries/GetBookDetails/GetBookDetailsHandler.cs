@@ -1,15 +1,22 @@
 using Api.LibrosLibre.Application.DTOs;
+using Api.LibrosLibre.Domain.Common;
 using MediatR;
 
 namespace Api.LibrosLibre.Application.Queries
 {
 	public class GetBookDetailsHandler(
 		IBookService _bookService
-		) : IRequestHandler<GetBookDetailsQuery, BookDTOResponse>
+		) : IRequestHandler<GetBookDetailsQuery, ApiResponse<BookDTOResponse>>
 	{
-		public async Task<BookDTOResponse> Handle(GetBookDetailsQuery request, CancellationToken ct)
+		public async Task<ApiResponse<BookDTOResponse>> Handle(GetBookDetailsQuery request, CancellationToken ct)
 		{
-			return await _bookService.GetBook(request.Id);
+			var result = await _bookService.GetBook(request.Id);
+			return new ApiResponse<BookDTOResponse>
+			{
+				StatusCode = 200,
+				Message = "Libro obtenido exitosamente",
+				Data = result
+			};
 		}
 	}
 }

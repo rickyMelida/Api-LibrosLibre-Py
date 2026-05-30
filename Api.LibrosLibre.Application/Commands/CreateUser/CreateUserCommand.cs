@@ -1,7 +1,8 @@
 using Api.LibrosLibre.Application.DTOs;
+using Api.LibrosLibre.Domain.Common;
 using MediatR;
 
 namespace Api.LibrosLibre.Application.Commands
 {
-	public record CreateUserCommand(UserDTO user) : IRequest<UserDTO>;
+	public record CreateUserCommand(UserDTO user) : IRequest<ApiResponse<UserDTO>>;
 }
