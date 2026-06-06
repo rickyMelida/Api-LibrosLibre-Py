@@ -43,7 +43,9 @@ namespace Api.LibrosLibre.Persistence
 
         public async Task<List<Image>> GetImages()
         {
-            return await _context.Images.ToListAsync();
+            return await _context.Images.OrderByDescending(i => i.Id)
+					.Take(6)
+					.ToListAsync();
         }
 
         public async Task<int> GetLastId()
