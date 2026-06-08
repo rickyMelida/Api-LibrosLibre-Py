@@ -21,8 +21,12 @@ namespace Api.LibrosLibre.Application
         public async Task<List<ImageDTO>> GetRelevantBookImages()
         {
             var images = await _imageRepository.GetImages();
+			var firstImages = images
+			.GroupBy(e => e.BookId)
+			.Select(group => group.OrderBy(img => img.Id).First())
+			.ToList();
 
-            return _mapper.Map<List<ImageDTO>>(images);
+            return _mapper.Map<List<ImageDTO>>(firstImages);
         }
 
         public async Task SetImages(BookDTORequest bookRequest, int bookId)
