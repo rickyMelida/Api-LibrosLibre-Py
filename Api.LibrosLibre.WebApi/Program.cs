@@ -19,8 +19,6 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
-Log.Error("TEST — App iniciada, probando escritura en PostgreSQL"); // prueba
-
 app.UseMiddleware<ExcepctionHandlingMiddleware>();
 app.UseSerilogMiddleware();  // ← solo una vez
 
