@@ -12,18 +12,20 @@ namespace Api.LibrosLibre.WebApi
     public class BookController : ControllerBase
     {
         private readonly IMediator _mediator;
+		private readonly ILogger<BookController> _logger;
 
-        public BookController(IMediator mediator)
+        public BookController(IMediator mediator, ILogger<BookController> logger)
         {
             _mediator = mediator;
+            _logger = logger;
         }
 
 
         [HttpGet("get-book-details")]
         public async Task<ActionResult<ApiResponse<BookDTOResponse>>> GetBookDetail([FromQuery] int id)
         {
+			_logger.LogInformation("Retrieved details for book with ID {Id}", id);
             var book = await _mediator.Send(new GetBookDetailsQuery(id));
-
             return Ok(book);
         }
 
@@ -58,6 +60,7 @@ namespace Api.LibrosLibre.WebApi
         [HttpPost("set-book")]
         public async Task<ActionResult<ApiResponse<BookDTOResponse>>> SetBook([FromForm] CreateBookCommand command)
         {
+			_logger.LogInformation("Creating a new book with title {Title}", command.bookRequest);
             var createdBook = await _mediator.Send(command);
 
             return CreatedAtAction(nameof(GetBookDetail), createdBook);

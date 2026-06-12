@@ -2,16 +2,17 @@ using Api.LibrosLibre.Domain;
 using Microsoft.EntityFrameworkCore;
 using Api.LibrosLibre.Application;
 using Api.LibrosLibre.Application.Exceptions;
+using Microsoft.Extensions.Logging;
 
 namespace Api.LibrosLibre.Persistence
 {
 	public class BookRepository : IBookRepository
 	{
 		private readonly AppDbContext _context;
-		private readonly IUnitOfWork _unitOfWork;
+		private readonly ILogger<IBookRepository> _logger;
 
-		public BookRepository(AppDbContext context, IUnitOfWork unitOfWork) =>
-			(_context, _unitOfWork) = (context, unitOfWork);
+		public BookRepository(AppDbContext context, ILogger<IBookRepository> logger) =>
+			(_context, _logger) = (context, logger);
 
 		public async Task<Book> CreateBook(Book book)
 		{
@@ -24,6 +25,7 @@ namespace Api.LibrosLibre.Persistence
 			}
 			catch (Exception ex)
 			{
+				_logger.LogError(ex, "Error creating book");
 				throw new RepositoryException($"Error creating book: {ex.Message}");
 			}
 		}
@@ -36,6 +38,7 @@ namespace Api.LibrosLibre.Persistence
 			}
 			catch (Exception ex)
 			{
+				_logger.LogError(ex, "Error retrieving book with ID {Id}", id);
 				throw new RepositoryException($"Error retrieving book with ID {id}: {ex.Message}");
 			}
 		}
@@ -48,6 +51,7 @@ namespace Api.LibrosLibre.Persistence
 			}
 			catch (Exception ex)
 			{
+				_logger.LogError(ex, "Error retrieving books");
 				throw new RepositoryException($"Error retrieving books: {ex.Message}");
 			}
 		}
@@ -63,6 +67,7 @@ namespace Api.LibrosLibre.Persistence
 			}
 			catch (Exception ex)
 			{
+				_logger.LogError(ex, "Error updating book with ID {Id}", book.Id);
 				throw new RepositoryException($"Error updating book: {ex.Message}");
 			}
 		}
@@ -77,6 +82,7 @@ namespace Api.LibrosLibre.Persistence
 			}
 			catch (Exception ex)
 			{
+				_logger.LogError(ex, "Error deleting book with ID {Id}", id);
 				throw new RepositoryException($"Error deleting book: {ex.Message}");
 			}
 		}
@@ -89,6 +95,7 @@ namespace Api.LibrosLibre.Persistence
 			}
 			catch (Exception ex)
 			{
+				_logger.LogError(ex, "Error retrieving last book ID");
 				throw new RepositoryException($"Error retrieving last book ID: {ex.Message}");
 			}
 		}
@@ -104,6 +111,7 @@ namespace Api.LibrosLibre.Persistence
 			}
 			catch (Exception ex)
 			{
+				_logger.LogError(ex, "Error retrieving recent books");
 				throw new RepositoryException($"Error retrieving recent books: {ex.Message}");
 			}
 		}
@@ -119,6 +127,7 @@ namespace Api.LibrosLibre.Persistence
 			}
 			catch (Exception ex)
 			{
+				_logger.LogError(ex, "Error retrieving feature books");
 				throw new RepositoryException($"Error retrieving feature books: {ex.Message}");
 			}
 		}
@@ -135,6 +144,7 @@ namespace Api.LibrosLibre.Persistence
 			}
 			catch (Exception ex)
 			{
+				_logger.LogError(ex, "Error retrieving other books");
 				throw new RepositoryException($"Error retrieving other books: {ex.Message}");
 			}
 		}
@@ -151,6 +161,7 @@ namespace Api.LibrosLibre.Persistence
 			}
 			catch (Exception ex)
 			{
+				_logger.LogError(ex, "Error searching books with keyword {Keyword}", keyword);
 				throw new RepositoryException($"Error searching books: {ex.Message}");
 			}
 		}

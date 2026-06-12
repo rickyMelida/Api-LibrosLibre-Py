@@ -5,6 +5,7 @@ using Api.LibrosLibre.Domain.Common;
 using Api.LibrosLibre.WebApi;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace Api.LibrosLibre.Test.Controller
@@ -13,12 +14,14 @@ namespace Api.LibrosLibre.Test.Controller
 	{
 		private Mock<IMediator> _mediatorMock;
 		private BookController _controller;
+		private ILogger<BookController> _logger;
 
 		[SetUp]
 		public void Setup()
 		{
 			_mediatorMock = new Mock<IMediator>();
-			_controller = new BookController(_mediatorMock.Object);
+			_logger = new Mock<ILogger<BookController>>().Object;
+			_controller = new BookController(_mediatorMock.Object, _logger);
 		}
 
 		[Test]
