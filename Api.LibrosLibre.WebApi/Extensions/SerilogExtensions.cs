@@ -1,5 +1,6 @@
 using Serilog;
 using Serilog.Sinks.PostgreSQL;
+using Serilog.Events;
 using NpgsqlTypes;
 namespace Api.LibrosLibre.WebApi.Extensions
 {
@@ -19,14 +20,25 @@ namespace Api.LibrosLibre.WebApi.Extensions
 				.Enrich.WithMachineName()
 				.Enrich.WithThreadId()
 				.WriteTo.Console()
-				.WriteTo.PostgreSQL(
-					connectionString: connectionString,
-					schemaName: "books_free_py",
-					tableName: "app_logs",
-					columnOptions: columnWriters,
-					needAutoCreateTable: false,
-					batchSizeLimit: 50,
-					period: TimeSpan.FromSeconds(5)
+				// Envolver el sink de PostgreSQL en un logger que excluya registros HTTP 200
+				.WriteTo.Logger(lc => lc
+					.Filter.ByExcluding(logEvent =>
+					{
+						if (logEvent == null) return false;
+						if (!logEvent.Properties.TryGetValue("StatusCode", out var statusProp)) return false;
+						var s = statusProp.ToString().Trim('"');
+						if (int.TryParse(s, out var code)) return code == 200;
+						return false;
+					})
+					.WriteTo.PostgreSQL(
+						connectionString: connectionString,
+						schemaName: "books_free_py",
+						tableName: "app_logs",
+						columnOptions: columnWriters,
+						needAutoCreateTable: false,
+						batchSizeLimit: 50,
+						period: TimeSpan.FromSeconds(5)
+					)
 				)
 				.CreateLogger();
 
@@ -55,7 +67,7 @@ namespace Api.LibrosLibre.WebApi.Extensions
 		{
 			{ "message",          new RenderedMessageColumnWriter() },
 			{ "message_template", new MessageTemplateColumnWriter() },
-			{ "level",            new SinglePropertyColumnWriter("Level", PropertyWriteMethod.ToString) }, // ← reemplaza LevelColumnWriter
+			{ "level",            new SinglePropertyColumnWriter("Level", PropertyWriteMethod.ToString) },
 			{ "timestamp",        new TimestampColumnWriter() },
 			{ "exception",        new ExceptionColumnWriter() },
 			{ "properties",       new PropertiesColumnWriter(NpgsqlDbType.Jsonb) },
