@@ -3,253 +3,298 @@ using Api.LibrosLibre.Domain;
 
 namespace Api.LibrosLibre.Application
 {
-    public class BookService : IBookService
-    {
-        private readonly IBookRepository _bookRepository;
-        private readonly IImagesService _bookImagesService;
-        private readonly IUserBookService _userBookService;
-        private readonly IUserService _userService;
-        private readonly IFavoriteRepository _favoriteRepository;
+	public class BookService : IBookService
+	{
+		private readonly IBookRepository _bookRepository;
+		private readonly IImagesService _bookImagesService;
+		private readonly IUserBookService _userBookService;
+		private readonly IUserService _userService;
+		private readonly IFavoriteRepository _favoriteRepository;
 
-        public BookService(IBookRepository bookRepository,
-                           IImagesService bookImagesService,
-                           IUserBookService userBookService,
-                           IUserService userService,
-                           IFavoriteRepository favoriteRepository) =>
-            (_bookRepository, _bookImagesService, _userBookService, _userService, _favoriteRepository) =
-            (bookRepository, bookImagesService, userBookService, userService, favoriteRepository);
+		public BookService(IBookRepository bookRepository,
+						   IImagesService bookImagesService,
+						   IUserBookService userBookService,
+						   IUserService userService,
+						   IFavoriteRepository favoriteRepository) =>
+			(_bookRepository, _bookImagesService, _userBookService, _userService, _favoriteRepository) =
+			(bookRepository, bookImagesService, userBookService, userService, favoriteRepository);
 
-        public async Task<BookDTOResponse> GetBook(int id)
-        {
-            var book = await _bookRepository.GetBookById(id);
-            var image = await _bookImagesService.GetImagesByBookId(book.Id);
-            var userBook = await _userBookService.GetUserBookByBookId(book.Id);
-            var user = await _userService.GetUserById(userBook.User);
+		public async Task<BookDTOResponse> GetBook(int id)
+		{
+			var book = await _bookRepository.GetBookById(id);
+			var image = await _bookImagesService.GetImagesByBookId(book.Id);
+			var userBook = await _userBookService.GetUserBookByBookId(book.Id);
+			var user = await _userService.GetUserById(userBook.User);
 
-            return new BookDTOResponse
-            {
-                Id = book.Id,
-                Title = book.Title,
-                Author = book.Author,
-                Price = book.Price,
-                State = book.State,
-                TransactionType = book.TransactionType,
-                Images = image.Select(e => Convert.ToBase64String(e.Picture)).ToList(),
-                Description = book.LitleDescription,
-                UserName = user.Name
-            };
-        }
+			return new BookDTOResponse
+			{
+				Id = book.Id,
+				Title = book.Title,
+				Author = book.Author,
+				Price = book.Price,
+				State = book.State,
+				TransactionType = book.TransactionType,
+				Images = image.Select(e => new ImagePrincipalDTO
+				{
+					Picture = Convert.ToBase64String(e.Picture),
+					IsPrincipal = e.IsPrincipal
+				}).ToList(),
+				Description = book.LitleDescription,
+				UserName = user.Name
+			};
+		}
 
-        public async Task<List<BookDTOResponse>> GetBooksByUser(int userId)
-        {
-            var userBooks = await _userBookService.GetUserBookByUserId(userId);
+		public async Task<List<BookDTOResponse>> GetBooksByUser(int userId)
+		{
+			var userBooks = await _userBookService.GetUserBookByUserId(userId);
 
-            List<BookDTOResponse> booksResults = new List<BookDTOResponse>();
+			List<BookDTOResponse> booksResults = new List<BookDTOResponse>();
 
-            foreach (var userBook in userBooks)
-            {
-                var book = await _bookRepository.GetBookById(userBook.Book);
-                var image = await _bookImagesService.GetImagesByBookId(book.Id);
-                var user = await _userService.GetUserById(userBook.User);
-                booksResults.Add(new BookDTOResponse
-                {
-                    Id = book.Id,
-                    Title = book.Title,
-                    Author = book.Author,
-                    Price = book.Price,
-                    State = book.State,
-                    TransactionType = book.TransactionType,
-                    Images = image.Select(e => Convert.ToBase64String(e.Picture)).ToList(),
-                    Description = book.LitleDescription,
-                    UserName = user.Name
-                });
-            }
+			foreach (var userBook in userBooks)
+			{
+				var book = await _bookRepository.GetBookById(userBook.Book);
+				var image = await _bookImagesService.GetImagesByBookId(book.Id);
+				var user = await _userService.GetUserById(userBook.User);
+				booksResults.Add(new BookDTOResponse
+				{
+					Id = book.Id,
+					Title = book.Title,
+					Author = book.Author,
+					Price = book.Price,
+					State = book.State,
+					TransactionType = book.TransactionType,
+					Images = image.Select(e => new ImagePrincipalDTO
+					{
+						Picture = Convert.ToBase64String(e.Picture),
+						IsPrincipal = e.IsPrincipal
+					}).ToList(),
+					Description = book.LitleDescription,
+					UserName = user.Name
+				});
+			}
 
-            return booksResults;
-        }
+			return booksResults;
+		}
 
-        public async Task<List<BookDTOResponse>> GetFavoritesBooks(int userId)
-        {
-            var favorites = await _favoriteRepository.GetFavoritesByUserId(userId);
-            List<BookDTOResponse> booksResults = new List<BookDTOResponse>();
+		public async Task<List<BookDTOResponse>> GetFavoritesBooks(int userId)
+		{
+			var favorites = await _favoriteRepository.GetFavoritesByUserId(userId);
+			List<BookDTOResponse> booksResults = new List<BookDTOResponse>();
 
-            foreach (var favorite in favorites)
-            {
-                var book = await _bookRepository.GetBookById(favorite.Book);
-                var image = await _bookImagesService.GetImagesByBookId(book.Id);
-                var user = await _userService.GetUserById(favorite.User);
-                booksResults.Add(new BookDTOResponse
-                {
-                    Id = book.Id,
-                    Title = book.Title,
-                    Author = book.Author,
-                    Price = book.Price,
-                    State = book.State,
-                    TransactionType = book.TransactionType,
-                    Images = image.Select(e => Convert.ToBase64String(e.Picture)).ToList(),
-                    Description = book.LitleDescription,
-                    UserName = user.Name
-                });
-            }
+			foreach (var favorite in favorites)
+			{
+				var book = await _bookRepository.GetBookById(favorite.Book);
+				var image = await _bookImagesService.GetImagesByBookId(book.Id);
+				var user = await _userService.GetUserById(favorite.User);
+				booksResults.Add(new BookDTOResponse
+				{
+					Id = book.Id,
+					Title = book.Title,
+					Author = book.Author,
+					Price = book.Price,
+					State = book.State,
+					TransactionType = book.TransactionType,
+					Images = image.Select(e => new ImagePrincipalDTO
+					{
+						Picture = Convert.ToBase64String(e.Picture),
+						IsPrincipal = e.IsPrincipal
+					}).ToList(),
+					Description = book.LitleDescription,
+					UserName = user.Name
+				});
+			}
 
-            return booksResults;
-        }
+			return booksResults;
+		}
 
-        public async Task<List<BookDTOResponse>> GetFeaturedBooks(int amount)
-        {
-            var featuresBooks = await _bookRepository.GetFeatureBooks(amount);
-            List<BookDTOResponse> booksResults = new List<BookDTOResponse>();
+		public async Task<List<BookDTOResponse>> GetFeaturedBooks(int amount)
+		{
+			var featuresBooks = await _bookRepository.GetFeatureBooks(amount);
+			List<BookDTOResponse> booksResults = new List<BookDTOResponse>();
 
-            foreach (var book in featuresBooks)
-            {
-                var image = await _bookImagesService.GetImagesByBookId(book.Id);
-                var userBook = await _userBookService.GetUserBookByBookId(book.Id);
-                var user = await _userService.GetUserById(userBook.User);
+			foreach (var book in featuresBooks)
+			{
+				var image = await _bookImagesService.GetImagesByBookId(book.Id);
+				var userBook = await _userBookService.GetUserBookByBookId(book.Id);
+				var user = await _userService.GetUserById(userBook.User);
 
-                booksResults.Add(new BookDTOResponse
-                {
-                    Id = book.Id,
-                    Title = book.Title,
-                    Author = book.Author,
-                    Price = book.Price,
-                    State = book.State,
-                    TransactionType = book.TransactionType,
-                    Images = image.Select(e => Convert.ToBase64String(e.Picture)).ToList(),
-                    Description = book.LitleDescription,
-                    UserName = user.Name
-                });
-            }
+				booksResults.Add(new BookDTOResponse
+				{
+					Id = book.Id,
+					Title = book.Title,
+					Author = book.Author,
+					Price = book.Price,
+					State = book.State,
+					TransactionType = book.TransactionType,
+					Images = image.Select(e => new ImagePrincipalDTO
+					{
+						Picture = Convert.ToBase64String(e.Picture),
+						IsPrincipal = e.IsPrincipal
+					}).ToList(),
+					Description = book.LitleDescription,
+					UserName = user.Name
+				});
+			}
 
-            return booksResults;
+			return booksResults;
 
-        }
+		}
 
-        public async Task<List<BookDTOResponse>> GetOthersBooks(int amount)
-        {
-            var featuresBooks = await _bookRepository.GetOtherBooks(amount);
-            List<BookDTOResponse> booksResults = new List<BookDTOResponse>();
+		private ImagePrincipalDTO GetPrincipalImage(List<ImageDTO> images)
+		{
+			var principalImage = images.FirstOrDefault(e => e.IsPrincipal);
+			if (principalImage != null)
+			{
+				return new ImagePrincipalDTO
+				{
+					Picture = Convert.ToBase64String(principalImage.Picture),
+					IsPrincipal = principalImage.IsPrincipal
+				};
+			}
+			else
+			{
+				return null;
+			}
+		}
 
-            foreach (var book in featuresBooks)
-            {
-                var image = await _bookImagesService.GetImagesByBookId(book.Id);
-                var userBook = await _userBookService.GetUserBookByBookId(book.Id);
-                var user = await _userService.GetUserById(userBook.User);
+		public async Task<List<BookDTOResponse>> GetOthersBooks(int amount)
+		{
+			var featuresBooks = await _bookRepository.GetOtherBooks(amount);
+			List<BookDTOResponse> booksResults = new List<BookDTOResponse>();
 
-                booksResults.Add(new BookDTOResponse
-                {
-                    Id = book.Id,
-                    Title = book.Title,
-                    Author = book.Author,
-                    Price = book.Price,
-                    State = book.State,
-                    TransactionType = book.TransactionType,
-                    Images = image.Select(e => Convert.ToBase64String(e.Picture)).ToList(),
-                    Description = book.LitleDescription,
-                    UserName = user.Name
-                });
-            }
+			foreach (var book in featuresBooks)
+			{
+				var image = await _bookImagesService.GetImagesByBookId(book.Id);
+				var userBook = await _userBookService.GetUserBookByBookId(book.Id);
+				var user = await _userService.GetUserById(userBook.User);
 
-            return booksResults;
-        }
+				booksResults.Add(new BookDTOResponse
+				{
+					Id = book.Id,
+					Title = book.Title,
+					Author = book.Author,
+					Price = book.Price,
+					State = book.State,
+					TransactionType = book.TransactionType,
+					Images = image.Select(e => new ImagePrincipalDTO
+					{
+						Picture = Convert.ToBase64String(e.Picture),
+						IsPrincipal = e.IsPrincipal
+					}).ToList(),
+					Description = book.LitleDescription,
+					UserName = user.Name
+				});
+			}
 
-        public async Task<List<BookDTOResponse>> GetRecentsBooks(int amount)
-        {
-            var featuresBooks = await _bookRepository.GetRecentBooks(amount);
-            List<BookDTOResponse> booksResults = new List<BookDTOResponse>();
+			return booksResults;
+		}
 
-            foreach (var book in featuresBooks)
-            {
-                var image = await _bookImagesService.GetImagesByBookId(book.Id);
-                var userBook = await _userBookService.GetUserBookByBookId(book.Id);
-                var user = await _userService.GetUserById(userBook.User);
+		public async Task<List<BookDTOResponse>> GetRecentsBooks(int amount)
+		{
+			var featuresBooks = await _bookRepository.GetRecentBooks(amount);
+			List<BookDTOResponse> booksResults = new List<BookDTOResponse>();
 
-                booksResults.Add(new BookDTOResponse
-                {
-                    Id = book.Id,
-                    Title = book.Title,
-                    Author = book.Author,
-                    Price = book.Price,
-                    State = book.State,
-                    TransactionType = book.TransactionType,
-                    Images = image.Select(e => Convert.ToBase64String(e.Picture)).ToList(),
-                    Description = book.LitleDescription,
-                    UserName = user.Name
-                });
-            }
+			foreach (var book in featuresBooks)
+			{
+				var image = await _bookImagesService.GetImagesByBookId(book.Id);
+				var userBook = await _userBookService.GetUserBookByBookId(book.Id);
+				var user = await _userService.GetUserById(userBook.User);
 
-            return booksResults;
-        }
+				booksResults.Add(new BookDTOResponse
+				{
+					Id = book.Id,
+					Title = book.Title,
+					Author = book.Author,
+					Price = book.Price,
+					State = book.State,
+					TransactionType = book.TransactionType,
+					Images = image.Select(e => new ImagePrincipalDTO
+					{
+						Picture = Convert.ToBase64String(e.Picture),
+						IsPrincipal = e.IsPrincipal
+					}).ToList(),
+					Description = book.LitleDescription,
+					UserName = user.Name
+				});
+			}
 
-        public async Task<List<BookDTOResponse>> SearchBook(string keyword)
-        {
-            var booksResult = await _bookRepository.SearchBook(keyword);
-            List<BookDTOResponse> booksResultFormat = new List<BookDTOResponse>();
+			return booksResults;
+		}
 
-            foreach (var book in booksResult)
-            {
-                var image = await _bookImagesService.GetImagesByBookId(book.Id);
-                var userBook = await _userBookService.GetUserBookByBookId(book.Id);
-                var user = await _userService.GetUserById(userBook.User);
+		public async Task<List<BookDTOResponse>> SearchBook(string keyword)
+		{
+			var booksResult = await _bookRepository.SearchBook(keyword);
+			List<BookDTOResponse> booksResultFormat = new List<BookDTOResponse>();
 
-                booksResultFormat.Add(new BookDTOResponse
-                {
-                    Id = book.Id,
-                    Title = book.Title,
-                    Author = book.Author,
-                    Price = book.Price,
-                    State = book.State,
-                    TransactionType = book.TransactionType,
-                    Images = image.Select(e => Convert.ToBase64String(e.Picture)).ToList(),
-                    Description = book.LitleDescription,
-                    UserName = user.Name
-                });
-            }
+			foreach (var book in booksResult)
+			{
+				var image = await _bookImagesService.GetImagesByBookId(book.Id);
+				var userBook = await _userBookService.GetUserBookByBookId(book.Id);
+				var user = await _userService.GetUserById(userBook.User);
 
-            return booksResultFormat;
-        }
+				booksResultFormat.Add(new BookDTOResponse
+				{
+					Id = book.Id,
+					Title = book.Title,
+					Author = book.Author,
+					Price = book.Price,
+					State = book.State,
+					TransactionType = book.TransactionType,
+					Images = image.Select(e => new ImagePrincipalDTO
+					{
+						Picture = Convert.ToBase64String(e.Picture),
+						IsPrincipal = e.IsPrincipal
+					}).ToList(),
+					Description = book.LitleDescription,
+					UserName = user.Name
+				});
+			}
 
-        public async Task<int> SetFavoriteBook(int userId, int bookId)
-        {
-            int id = await _favoriteRepository.GetLastId() + 1;
-            var result = await _favoriteRepository.SetFavorite(new Favorite()
-            {
-                Id = id,
-                Book = bookId,
-                User = userId
-            });
+			return booksResultFormat;
+		}
 
-            return result.Id;
-        }
+		public async Task<int> SetFavoriteBook(int userId, int bookId)
+		{
+			int id = await _favoriteRepository.GetLastId() + 1;
+			var result = await _favoriteRepository.SetFavorite(new Favorite()
+			{
+				Id = id,
+				Book = bookId,
+				User = userId
+			});
 
-        public async Task<int> SetNewBook(BookDTORequest bookRequest)
-        {
-            Book book = await SetBook(bookRequest);
+			return result.Id;
+		}
 
-            await _bookImagesService.SetImages(bookRequest, book.Id);
-            await _userBookService.Set(bookRequest, book.Id);
+		public async Task<int> SetNewBook(BookDTORequest bookRequest)
+		{
+			Book book = await SetBook(bookRequest);
 
-            return book.Id;
-        }
+			await _bookImagesService.SetImages(bookRequest, book.Id);
+			await _userBookService.Set(bookRequest, book.Id);
 
-        private async Task<Book> SetBook(BookDTORequest bookRequest)
-        {
-            Book book = new Book()
-            {
-                Author = bookRequest.Author,
-                Available = true,
-                LitleDescription = bookRequest.Description,
-                Title = bookRequest.Title,
-                OtherDetail = bookRequest.OtherDetail ?? "",
-                Price = bookRequest.Price,
-                State = bookRequest.State,
-                TransactionType = bookRequest.TransactionType,
-                UploadDate = DateOnly.FromDateTime(DateTime.UtcNow),
-                Year = bookRequest.Year ?? ""
-            };
+			return book.Id;
+		}
 
-            await _bookRepository.CreateBook(book);
+		private async Task<Book> SetBook(BookDTORequest bookRequest)
+		{
+			Book book = new Book()
+			{
+				Author = bookRequest.Author,
+				Available = true,
+				LitleDescription = bookRequest.Description,
+				Title = bookRequest.Title,
+				OtherDetail = bookRequest.OtherDetail ?? "",
+				Price = bookRequest.Price,
+				State = bookRequest.State,
+				TransactionType = bookRequest.TransactionType,
+				UploadDate = DateOnly.FromDateTime(DateTime.UtcNow),
+				Year = bookRequest.Year ?? ""
+			};
 
-            return book;
-        }
-    }
+			await _bookRepository.CreateBook(book);
+
+			return book;
+		}
+	}
 }

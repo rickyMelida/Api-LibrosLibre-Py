@@ -8,4 +8,10 @@ namespace Api.LibrosLibre.Application.DTOs
         public int BookId { get; set; }
 		public bool IsPrincipal { get; set; }
     }
+
+	public class ImagePrincipalDTO
+	{
+		public string Picture { get; set; }
+		public bool IsPrincipal { get; set; }
+	}
 }

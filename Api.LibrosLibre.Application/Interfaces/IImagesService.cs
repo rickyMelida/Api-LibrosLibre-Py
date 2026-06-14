@@ -1,5 +1,4 @@
 using Api.LibrosLibre.Application.DTOs;
-using Api.LibrosLibre.Domain;
 
 namespace Api.LibrosLibre.Application
 {

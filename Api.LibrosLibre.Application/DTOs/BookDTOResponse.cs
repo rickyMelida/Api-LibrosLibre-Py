@@ -4,6 +4,6 @@ namespace Api.LibrosLibre.Application.DTOs
     {
         public int Id { get; set; }
         public string UserName { get; set; }
-        public List<string> Images { get; set; } 
+        public List<ImagePrincipalDTO> Images { get; set; } 
     }
 }
