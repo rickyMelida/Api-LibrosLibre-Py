@@ -40,7 +40,9 @@ namespace Api.LibrosLibre.Application
 					IsPrincipal = e.IsPrincipal
 				}).ToList(),
 				Description = book.LitleDescription,
-				UserName = user.Name
+				UserName = user.Name,
+				Year = book.Year,
+				OtherDetail = book.OtherDetail
 			};
 		}
 
@@ -69,7 +71,9 @@ namespace Api.LibrosLibre.Application
 						IsPrincipal = e.IsPrincipal
 					}).ToList(),
 					Description = book.LitleDescription,
-					UserName = user.Name
+					UserName = user.Name,
+					Year = book.Year,
+					OtherDetail = book.OtherDetail
 				});
 			}
 
@@ -100,7 +104,9 @@ namespace Api.LibrosLibre.Application
 						IsPrincipal = e.IsPrincipal
 					}).ToList(),
 					Description = book.LitleDescription,
-					UserName = user.Name
+					UserName = user.Name,
+					Year = book.Year,
+					OtherDetail = book.OtherDetail
 				});
 			}
 
@@ -132,7 +138,9 @@ namespace Api.LibrosLibre.Application
 						IsPrincipal = e.IsPrincipal
 					}).ToList(),
 					Description = book.LitleDescription,
-					UserName = user.Name
+					UserName = user.Name,
+					Year = book.Year,
+					OtherDetail = book.OtherDetail
 				});
 			}
 
@@ -182,7 +190,9 @@ namespace Api.LibrosLibre.Application
 						IsPrincipal = e.IsPrincipal
 					}).ToList(),
 					Description = book.LitleDescription,
-					UserName = user.Name
+					UserName = user.Name,
+					Year = book.Year,
+					OtherDetail = book.OtherDetail
 				});
 			}
 
@@ -214,7 +224,9 @@ namespace Api.LibrosLibre.Application
 						IsPrincipal = e.IsPrincipal
 					}).ToList(),
 					Description = book.LitleDescription,
-					UserName = user.Name
+					UserName = user.Name,
+					Year = book.Year,
+					OtherDetail = book.OtherDetail
 				});
 			}
 
@@ -246,7 +258,9 @@ namespace Api.LibrosLibre.Application
 						IsPrincipal = e.IsPrincipal
 					}).ToList(),
 					Description = book.LitleDescription,
-					UserName = user.Name
+					UserName = user.Name,
+					Year = book.Year,
+					OtherDetail = book.OtherDetail
 				});
 			}
 
