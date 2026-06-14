@@ -18,5 +18,8 @@ namespace Api.LibrosLibre.Domain
 		
         [Column("book")]
         public int BookId { get; set; }
+
+		[Column("is_principal")]
+		public bool IsPrincipal { get; set; }
     }
 }

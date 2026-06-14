@@ -6,5 +6,6 @@ namespace Api.LibrosLibre.Application.DTOs
         public string Description { get; set; }
         public byte[] Picture { get; set; }
         public int BookId { get; set; }
+		public bool IsPrincipal { get; set; }
     }
 }

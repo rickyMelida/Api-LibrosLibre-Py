@@ -6,6 +6,7 @@ namespace Api.LibrosLibre.Application.DTOs
     {
         public int User { get; set; }
         public List<IFormFile> Images { get; set; }
+		public string PrincipalImage { get; set; }
         
     }
 }

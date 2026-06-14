@@ -41,7 +41,8 @@ namespace Api.LibrosLibre.Application
                 {
                     BookId = bookId,
                     Description = $"{bookRequest.Title} - {bookRequest.Author}",
-                    Picture = imageBytes
+                    Picture = imageBytes,
+					IsPrincipal = picture.FileName == bookRequest.PrincipalImage
                 };
 
                 await _imageRepository.CreateImage(image);
