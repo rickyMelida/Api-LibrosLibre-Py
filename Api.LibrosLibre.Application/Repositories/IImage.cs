@@ -4,7 +4,7 @@ namespace Api.LibrosLibre.Application
 {
     public interface IImageRepository
     {
-        Task<List<Image>> GetImages();
+        Task<List<Image>> GetPrincipalImages();
         Task<Image> GetImageById(int id);
         Task<Image> CreateImage(Image image);
         Task<Image> UpdateImage(Image image);

@@ -41,9 +41,10 @@ namespace Api.LibrosLibre.Persistence
             throw new NotImplementedException();
         }
 
-        public async Task<List<Image>> GetImages()
+        public async Task<List<Image>> GetPrincipalImages()
         {
             return await _context.Images.OrderByDescending(i => i.Id)
+					.Where(i => i.IsPrincipal)
 					.Take(6)
 					.ToListAsync();
         }

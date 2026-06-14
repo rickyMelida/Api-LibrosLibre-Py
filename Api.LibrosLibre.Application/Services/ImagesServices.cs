@@ -20,7 +20,7 @@ namespace Api.LibrosLibre.Application
 
         public async Task<List<ImageDTO>> GetRelevantBookImages()
         {
-            var images = await _imageRepository.GetImages();
+            var images = await _imageRepository.GetPrincipalImages();
 			var firstImages = images
 			.GroupBy(e => e.BookId)
 			.Select(group => group.OrderBy(img => img.Id).First())
@@ -36,13 +36,14 @@ namespace Api.LibrosLibre.Application
                 using var ms = new MemoryStream();
                 await picture.CopyToAsync(ms);
                 var imageBytes = ms.ToArray();
+                bool isPrincipal = bookRequest.Images.Count == 1 || picture.FileName == bookRequest.PrincipalImage;
 
                 Image image = new Image()
                 {
                     BookId = bookId,
                     Description = $"{bookRequest.Title} - {bookRequest.Author}",
                     Picture = imageBytes,
-					IsPrincipal = picture.FileName == bookRequest.PrincipalImage
+                    IsPrincipal = isPrincipal
                 };
 
                 await _imageRepository.CreateImage(image);
